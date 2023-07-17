@@ -1,0 +1,8 @@
+npm i
+yarn
+yarn add styled-components
+yarn add json-server
+yarn json-server --watch db.json --port 3333
+yarn add axios
+yarn add react-query
+yarn add react-uuid
