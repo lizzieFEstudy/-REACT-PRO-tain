@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
+import MainComp from '../components/MainComp/MainComp';
 
-function Main() {
-  return <div>Main</div>;
-}
-
+const Main = () => {
+  return <MainComp />;
+};
 export default Main;
