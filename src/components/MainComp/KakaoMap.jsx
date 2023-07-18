@@ -60,11 +60,12 @@ const KakaoMap = () => {
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
       // 키워드 검색을 요청하는 함수입니다
-      const searchPlaces = async () => {
+      const searchPlaces = async (changedCoordinate) => {
         // var keyword = window.prompt('입력ㄱ', '헬스장');
         let keyword = '헬스장';
 
-        const currentCoordinate = await getCurrentCoordinate();
+        const currentCoordinate = changedCoordinate ? changedCoordinate : await getCurrentCoordinate();
+
         const options = {
           location: currentCoordinate,
           radius: 10000,
@@ -259,6 +260,25 @@ const KakaoMap = () => {
           el.removeChild(el.lastChild);
         }
       }
+
+      /**
+       * 중심좌표 변경 이벤트
+       */
+      // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, 'idle', function () {
+        // 지도의  레벨을 얻어옵니다
+        var level = map.getLevel();
+
+        // 지도의 중심좌표를 얻어옵니다
+        var latlng = map.getCenter();
+
+        const lat = latlng.getLat(); // 위도
+        const lon = latlng.getLng(); // 경도
+
+        const coordinate = new kakao.maps.LatLng(lat, lon);
+
+        searchPlaces(coordinate);
+      });
     } catch (error) {
       console.log(error);
     }
