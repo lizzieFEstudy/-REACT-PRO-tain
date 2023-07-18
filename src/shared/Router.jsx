@@ -5,7 +5,6 @@ import Login from "../pages/Login";
 import Main from "../pages/Main";
 import Details from "../pages/Details";
 
-
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
