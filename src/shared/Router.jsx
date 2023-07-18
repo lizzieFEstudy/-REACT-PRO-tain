@@ -5,7 +5,6 @@ import Login from "../pages/Login";
 import Main from "../pages/Main";
 import Details from "../pages/Details";
 
-
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -17,6 +16,7 @@ const Router = () => {
       // 임시로 true값으로 설정.
       setIsLoggedIn(false);
     }
+
   }, [isLoggedIn]);
   
   return (
