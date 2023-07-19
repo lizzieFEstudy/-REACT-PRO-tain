@@ -166,11 +166,11 @@ const RegisterComp = () => {
   };
 
   return (
-    <StSection>
-      <form onSubmit={HandleRegisterSubmit}>
+    <StRegisterSection>
+      <StRegisterForm onSubmit={HandleRegisterSubmit}>
         <div>
           <label>닉네임</label>
-          <input
+          <StRegisterInput
             name="name"
             type="text"
             placeholder="2글자~10글자 닉네임"
@@ -182,7 +182,7 @@ const RegisterComp = () => {
         </div>
         <div>
           <label>이메일</label>
-          <input
+          <StRegisterInput
             name="email"
             type="text"
             placeholder="healthZZang@reactprotain.com"
@@ -194,7 +194,7 @@ const RegisterComp = () => {
         </div>
         <div>
           <label>비밀번호</label>
-          <input
+          <StRegisterInput
             name="pw"
             type="password"
             placeholder="대소문자, 숫자, 특수문자 포함 8자 이상"
@@ -206,7 +206,7 @@ const RegisterComp = () => {
         </div>
         <div>
           <label>비밀번호 확인</label>
-          <input
+          <StRegisterInput
             name="pwCheck"
             type="password"
             placeholder="비밀번호와 동일하게 적어주세요!"
@@ -217,16 +217,47 @@ const RegisterComp = () => {
           <p className="message"> {pwCheckMessage} </p>
         </div>
         <button>회원가입</button>
-      </form>
-      <button onClick={() => navigate('/login')}>로그인 페이지 이동</button>
-    </StSection>
+        <button type='button' onClick={() => navigate('/login')}>로그인 페이지 이동</button>
+      </StRegisterForm>
+      
+    </StRegisterSection>
   );
 };
 
 export default RegisterComp;
 
-const StSection = styled.section`
+const StRegisterSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
 `;
+
+const StRegisterForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 500px;
+  min-height: 700px;
+  width: 20%;
+  height: 50%;
+  border: 5px solid #ff6e6e;
+  border-radius: 10%;
+  box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
+  margin: auto;
+  gap: 1.5rem;
+`
+
+const StRegisterInput = styled.input`
+  width: 15rem;
+  height: 1rem;
+  font-size: 16px;
+  padding: 0.5rem;
+  &:focus {
+    outline-color: #ff6e6e;
+  }
+`
+

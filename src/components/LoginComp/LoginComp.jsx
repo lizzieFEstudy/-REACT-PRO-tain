@@ -80,7 +80,6 @@ const StLoginCtn = styled.div`
   justify-content: center;
   width: 100%;
   height: 100vh;
-  border: px solid #ff6e6e;
   margin: auto;
 `;
 
