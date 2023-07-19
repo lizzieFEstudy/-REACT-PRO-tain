@@ -64,15 +64,20 @@ const RegisterComp = () => {
   //   }
   // };
 
+  const HandleInputChange = (event, setState, setStateMessage) => {
+    setStateMessage("")
+    setState(event.target.value);
+  }
+
   // 회원정보 입력시 유효성 검사에 따라 메시지 출력
-  const HandleInputChange = (event) => {
+  const HandleInputValidation = (event) => {
     event.preventDefault();
     const currentName = event.target.name;
     const currentValue = event.target.value;
     switch (currentName) {
       case 'name':
-        setName(currentValue);
         const nameRegExp = /^[가-힣a-zA-Z0-9][가-힣a-zA-Z0-9]{1,9}$/;
+        
         if (!nameRegExp.test(currentValue)) {
           setNameMessage('2~10 사이의 한글*영문 대소문자 또는 숫자만 입력해주세요!');
           setIsName(false);
@@ -86,9 +91,7 @@ const RegisterComp = () => {
         break;
 
       case 'email':
-        setEmail(currentValue);
         const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
         if (!emailRegExp.test(currentValue)) {
           setEmailMessage('올바른 이메일 형식이 아닙니다.');
           setIsEmail(false);
@@ -102,9 +105,7 @@ const RegisterComp = () => {
         break;
 
       case 'pw':
-        setPw(currentValue);
         const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-
         if (!pwRegExp.test(currentValue)) {
           setPwMessage('비밀번호는 문자, 숫자, 특수문자를 포함한 8자리 이상입니다!');
           setIsPw(false);
@@ -115,7 +116,6 @@ const RegisterComp = () => {
         break;
 
       case 'pwCheck':
-        setPwCheck(currentValue);
         if (!(currentValue == pw)) {
           setPwCheckMessage('확인 비밀번호가 일치하지 않습니다');
           setIsPwCheck(false);
@@ -175,7 +175,8 @@ const RegisterComp = () => {
             type="text"
             placeholder="2글자~10글자 닉네임"
             value={name}
-            onChange={(event) => HandleInputChange(event)}
+            onChange={(event) => HandleInputChange(event, setName, setNameMessage)}
+            onBlur={(event) => HandleInputValidation(event)}
           />
           <p className="message"> {nameMessage} </p>
         </div>
@@ -186,7 +187,8 @@ const RegisterComp = () => {
             type="text"
             placeholder="healthZZang@reactprotain.com"
             value={email}
-            onChange={(event) => HandleInputChange(event)}
+            onChange={(event) => HandleInputChange(event, setEmail, setEmailMessage)}
+            onBlur={(event) => HandleInputValidation(event)}
           />
           <p className="message"> {emailMessage} </p>
         </div>
@@ -197,7 +199,8 @@ const RegisterComp = () => {
             type="password"
             placeholder="대소문자, 숫자, 특수문자 포함 8자 이상"
             value={pw}
-            onChange={(event) => HandleInputChange(event)}
+            onChange={(event) => HandleInputChange(event, setPw, setPwMessage)}
+            onBlur={(event) => HandleInputValidation(event)}
           />
           <p className="message"> {pwMessage} </p>
         </div>
@@ -208,7 +211,8 @@ const RegisterComp = () => {
             type="password"
             placeholder="비밀번호와 동일하게 적어주세요!"
             value={pwCheck}
-            onChange={(event) => HandleInputChange(event)}
+            onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
+            onBlur={(event) => HandleInputValidation(event)}
           />
           <p className="message"> {pwCheckMessage} </p>
         </div>
