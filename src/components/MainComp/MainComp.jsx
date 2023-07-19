@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
+import KakaoMap from './KakaoMap';
 
 const MainComp = () => {
   const navigate = useNavigate()
@@ -24,7 +25,7 @@ const MainComp = () => {
   };
   return (
     <>
-      <div>로그인해서 메인이 나오면 성공!!!</div>
+      <KakaoMap/>
       <button onClick={(event) => HandleLogOut(event)}>로그아웃</button>
     </>
   );
