@@ -53,7 +53,7 @@ const LoginComp = () => {
   return (
     <StLoginCtn>
       <StLoginForm onSubmit={HandleLoginSubmit}>
-        <StLoginLogo>💪🏽REACT PROtain</StLoginLogo>
+        <StLoginLogo>💪🏽REACT PROtein</StLoginLogo>
         <div>
           <label>이메일 주소</label>
           <br />
@@ -88,8 +88,8 @@ const StLoginForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 400px;
-  min-height: 600px;
+  min-width: 500px;
+  min-height: 700px;
   width: 20%;
   height: 50%;
   border: 5px solid #ff6e6e;

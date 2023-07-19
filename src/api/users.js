@@ -9,4 +9,4 @@ const addUsers = async (newUser) => {
   await axios.post(`${process.env.REACT_APP_SERVER_URL}/users`, newUser)
 }
 
-export { getUsers, addUsers}
+export { getUsers, addUsers }
