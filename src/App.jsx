@@ -1,9 +1,17 @@
 import React from 'react';
 import Router from './shared/Router';
-import './App.css'
+import { useAuthUser } from '@react-query-firebase/auth';
+import { auth } from './firebase';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App() {
-  return <Router />;
+  const queryClient = new QueryClient()
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom/dist';
 
 const InfoDiv = styled.div`
   padding: 15px;
@@ -8,15 +9,15 @@ const InfoDiv = styled.div`
 const { kakao } = window;
 
 const getCurrentCoordinate = async () => {
-  console.log('1. getCurrentCoordinate 함수 실행!!!');
-  console.log('2. navigator.geolocation', navigator.geolocation);
+  //   console.log('1. getCurrentCoordinate 함수 실행!!!');
+  //   console.log('2. navigator.geolocation', navigator.geolocation);
 
   return new Promise((res, rej) => {
     // HTML5의 geolocaiton으로 사용할 수 있는지 확인합니다.
     if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다.
       navigator.geolocation.getCurrentPosition(function (position) {
-        console.log(position);
+        // console.log(position);
         const lat = position.coords.latitude; // 위도
         const lon = position.coords.longitude; // 경도
 
@@ -30,8 +31,10 @@ const getCurrentCoordinate = async () => {
 };
 
 const KakaoMap = () => {
+
   const [selectedCategory, setSelectedCategory] = useState('필라테스');
-  const [places,setPlaces] = useState([])
+  const [places, setPlaces] = useState([]);
+
 
   useEffect(() => {
       setPlaces([])
@@ -46,7 +49,7 @@ const KakaoMap = () => {
        */
       const setInitLocation = async () => {
         let locPosition = await getCurrentCoordinate();
-        console.log('3. locPosition', locPosition);
+        // console.log('3. locPosition', locPosition);
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);
 
@@ -99,8 +102,10 @@ const KakaoMap = () => {
 
         const currentCoordinate = changedCoordinate ? changedCoordinate : await getCurrentCoordinate();
 
+        // const bound = kakao.maps.LatLngBounds();
         const options = {
           location: currentCoordinate,
+          //   bounds: bound,
           radius: 10000,
           sort: kakao.maps.services.SortBy.DISTANCE
         };
@@ -113,6 +118,7 @@ const KakaoMap = () => {
       };
 
       // 키워드로 장소를 검색합니다
+
       searchPlaces(selectedCategory);
 
       const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -124,8 +130,14 @@ const KakaoMap = () => {
 
       const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
+      //   searchPlaces();
+
+
       // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
       function placesSearchCB(data, status, pagination) {
+        // console.log('테스트 데이터 => ', data);
+        setPlaces(data);
+
         if (status === kakao.maps.services.Status.OK) {
           // 정상적으로 검색이 완료됐으면
           // 검색 목록과 마커를 표출합니다
@@ -198,6 +210,7 @@ const KakaoMap = () => {
 
       // 검색결과 항목을 Element로 반환하는 함수입니다
       function getListItem(index, places) {
+        // console.log('검색결과 항목 => ', places);
         var el = document.createElement('li'),
           itemStr =
             '<span class="markerbg marker_' +
@@ -316,7 +329,22 @@ const KakaoMap = () => {
 
       </div>
       <div id="map" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}></div>
-      <div id="menu_wrap">
+      <ul>
+        {places.map((place, index) => {
+          //   console.log('쟉스의 place => ', place);
+          return (
+            <li key={`${index}_${place.id}`}>
+              <Link to={`/${place.id}`} state={{ test1: place }}>
+                <strong>{place.place_name}</strong>
+              </Link>
+              {place.road_address_name ? <span>{place.road_address_name}</span> : null}
+              <span>{place.address_name}</span>
+              <span>{place.phone}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <div id="menu_wrap" style={{ display: 'none' }}>
         <ul id="placesList"></ul>
         <div id="pagination"></div>
       </div>
