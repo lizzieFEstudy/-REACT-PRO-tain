@@ -65,9 +65,9 @@ const RegisterComp = () => {
   // };
 
   const HandleInputChange = (event, setState, setStateMessage) => {
-    setStateMessage("")
+    setStateMessage('');
     setState(event.target.value);
-  }
+  };
 
   // 회원정보 입력시 유효성 검사에 따라 메시지 출력
   const HandleInputValidation = (event) => {
@@ -77,50 +77,57 @@ const RegisterComp = () => {
     switch (currentName) {
       case 'name':
         const nameRegExp = /^[가-힣a-zA-Z0-9][가-힣a-zA-Z0-9]{1,9}$/;
-        
-        if (!nameRegExp.test(currentValue)) {
-          setNameMessage('2~10 사이의 한글*영문 대소문자 또는 숫자만 입력해주세요!');
+        if (currentValue === '') {
+          setNameMessage('');
+        } else if (!nameRegExp.test(currentValue)) {
+          setNameMessage(`*한글·영문 대소문자 또는 숫자만 입력해주세요!`);
           setIsName(false);
         } else if (nameUsing.includes(currentValue)) {
-          setNameMessage('누군가 이 닉네임을 사용중입니다!');
+          setNameMessage('*누군가 이 닉네임을 사용중입니다!');
           setIsName(false);
         } else {
-          setNameMessage('사용가능한 닉네임입니다.');
+          setNameMessage('*사용가능한 닉네임입니다.');
           setIsName(true);
         }
         break;
 
       case 'email':
         const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegExp.test(currentValue)) {
-          setEmailMessage('올바른 이메일 형식이 아닙니다.');
+        if (currentValue === '') {
+          setNameMessage('');
+        } else if (!emailRegExp.test(currentValue)) {
+          setEmailMessage('*올바른 이메일 형식이 아닙니다.');
           setIsEmail(false);
         } else if (emailUsing.includes(currentValue)) {
-          setEmailMessage('누군가 이 이메일을 사용중입니다!');
+          setEmailMessage('*누군가 이 이메일을 사용중입니다!');
           setIsEmail(false);
-        }else {
-          setEmailMessage('사용가능한 이메일입니다.');
+        } else {
+          setEmailMessage('*사용가능한 이메일입니다.');
           setIsEmail(true);
         }
         break;
 
       case 'pw':
         const pwRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
-        if (!pwRegExp.test(currentValue)) {
-          setPwMessage('비밀번호는 문자, 숫자, 특수문자를 포함한 8자리 이상입니다!');
+        if (currentValue === '') {
+          setNameMessage('');
+        } else if (!pwRegExp.test(currentValue)) {
+          setPwMessage('*비밀번호는 문자, 숫자, 특수문자 포함 8자 이상입니다!');
           setIsPw(false);
         } else {
-          setPwMessage('사용가능한 비밀번호입니다!');
+          setPwMessage('*사용가능한 비밀번호입니다!');
           setIsPw(true);
         }
         break;
 
       case 'pwCheck':
-        if (!(currentValue == pw)) {
-          setPwCheckMessage('확인 비밀번호가 일치하지 않습니다');
+        if (currentValue === '') {
+          setNameMessage('');
+        } else if (!(currentValue == pw)) {
+          setPwCheckMessage('*확인 비밀번호가 일치하지 않습니다');
           setIsPwCheck(false);
         } else {
-          setPwCheckMessage('확인 비밀번호가 일치합니다!');
+          setPwCheckMessage('*확인 비밀번호가 일치합니다!');
           setIsPwCheck(true);
         }
         break;
@@ -166,11 +173,12 @@ const RegisterComp = () => {
   };
 
   return (
-    <StSection>
-      <form onSubmit={HandleRegisterSubmit}>
-        <div>
+    <StRegisterSection>
+      <StRegisterForm onSubmit={HandleRegisterSubmit}>
+        <StRegisterInputBox>
           <label>닉네임</label>
-          <input
+          <br />
+          <StRegisterInput
             name="name"
             type="text"
             placeholder="2글자~10글자 닉네임"
@@ -178,35 +186,41 @@ const RegisterComp = () => {
             onChange={(event) => HandleInputChange(event, setName, setNameMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
-          <p className="message"> {nameMessage} </p>
-        </div>
-        <div>
+          <br />
+          <StRegisterMsg className="message"> {nameMessage} </StRegisterMsg>
+        </StRegisterInputBox>
+        <StRegisterInputBox>
           <label>이메일</label>
-          <input
+          <br />
+          <StRegisterInput
             name="email"
             type="text"
-            placeholder="healthZZang@reactprotain.com"
+            placeholder="ex: healthZZang@reactprotain.com"
             value={email}
             onChange={(event) => HandleInputChange(event, setEmail, setEmailMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
-          <p className="message"> {emailMessage} </p>
-        </div>
-        <div>
+          <br />
+          <StRegisterMsg className="message"> {emailMessage} </StRegisterMsg>
+        </StRegisterInputBox>
+        <StRegisterInputBox>
           <label>비밀번호</label>
-          <input
+          <br />
+          <StRegisterInput
             name="pw"
             type="password"
-            placeholder="대소문자, 숫자, 특수문자 포함 8자 이상"
+            placeholder="영문 대소문자, 숫자, 특수문자 포함 8자 이상"
             value={pw}
             onChange={(event) => HandleInputChange(event, setPw, setPwMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
-          <p className="message"> {pwMessage} </p>
-        </div>
-        <div>
+          <br />
+          <StRegisterMsg className="message"> {pwMessage} </StRegisterMsg>
+        </StRegisterInputBox>
+        <StRegisterInputBox>
           <label>비밀번호 확인</label>
-          <input
+          <br />
+          <StRegisterInput
             name="pwCheck"
             type="password"
             placeholder="비밀번호와 동일하게 적어주세요!"
@@ -214,19 +228,100 @@ const RegisterComp = () => {
             onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
-          <p className="message"> {pwCheckMessage} </p>
-        </div>
-        <button>회원가입</button>
-      </form>
-      <button onClick={() => navigate('/login')}>로그인 페이지 이동</button>
-    </StSection>
+          <br />
+          <StRegisterMsg className="message"> {pwCheckMessage} </StRegisterMsg>
+        </StRegisterInputBox>
+        <StRegisterBtn>회원가입</StRegisterBtn>
+        <StGoLoginSpan onClick={() => navigate('/login')}>로그인 페이지 이동</StGoLoginSpan>
+      </StRegisterForm>
+    </StRegisterSection>
   );
 };
 
 export default RegisterComp;
 
-const StSection = styled.section`
+const StRegisterSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+`;
+
+const StRegisterForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 500px;
+  min-height: 700px;
+  width: 20%;
+  height: 50%;
+  border: 5px solid #ff6e6e;
+  border-radius: 10%;
+  box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
+  margin: auto;
+  gap: 1.5rem;
+`;
+
+const StRegisterInputBox = styled.div`
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StRegisterInput = styled.input`
+  width: 15rem;
+  height: 1rem;
+  font-size: 16px;
+  padding: 0.5rem;
+  min-width: 22rem;
+  margin: 5px 0;
+  &:focus {
+    outline-color: #ff6e6e;
+  }
+`;
+
+const StRegisterBtn = styled.button`
+  margin-top: 0.5rem;
+  height: 2.5rem;
+  width: 23rem;
+  font-size: 20px;
+  background-color: white;
+  color: #ff6e6e;
+  font-weight: bold;
+  border: 1px solid #ff6e6e;
+  cursor: pointer;
+  &:hover {
+    transition-duration: 0.5s;
+    background-color: #ff6e6e;
+    color: white;
+    font-weight: bold;
+  }
+`;
+
+const StRegisterMsg = styled.p`
+  font-size: 13px;
+  color: #ff6e6e;
+  min-height: 1rem;
+  height: 1rem;
+  min-width: 20rem;
+  width: 22rem;
+  white-space: pre-wrap;
+`;
+
+const StGoLoginSpan = styled.span`
+  margin-top: 3rem;
+  text-align: center;
+  width: 20rem;
+  height: 2rem;
+  cursor: pointer;
+  &:hover {
+    transition-duration: 0.2s;
+    color: #ff6e6e;
+    text-decoration: underline;
+    font-weight: bold;
+  }
 `;
