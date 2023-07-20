@@ -6,6 +6,7 @@ import { getComments, addComment, deleteComment, updateComment } from '../../api
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
+import uuid from 'react-uuid';
 
 function DetailBox() {
   const navigate = useNavigate();
@@ -30,12 +31,18 @@ function DetailBox() {
     }
   });
 
+  const updateMutation = useMutation(updateComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('comments');
+    }
+  });
+
   const addCommentHandler = async (e) => {
     e.preventDefault();
 
     if (comment) {
       const newComment = {
-        // id: id,
+        id: uuid(),
         nickName,
         comment,
         userId: auth.currentUser.uid
@@ -57,6 +64,13 @@ function DetailBox() {
     }
   };
 
+  const updateCommentHandler = (id) => {
+    const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
+    if (confirmed) {
+      updateMutation.mutate(id);
+    }
+  };
+
   const commentHandler = (e) => {
     SetComment(e.target.value);
   };
@@ -74,10 +88,31 @@ function DetailBox() {
         <CommentInput type="text" value={comment} onChange={commentHandler} placeholder="내용을 입력하세요." />
         <button onClick={addCommentHandler}>등록</button>
         <br />
-        <div>name| 별점 7.8| 22.04.05</div>
-        <button>수정</button>
-        <button>삭제</button>
-        <div>comment...comment...comment...</div>
+        {data
+          ?.filter((comment) => comment.postId == params.id)
+          .map((comment) => {
+            return (
+              <div key={comment.id}>
+                {/* <div>{users.name}</div> */}
+                <div>name| 별점 7.8| 22.04.05</div>
+                <button
+                  onClick={() => {
+                    updateCommentHandler(comment.id);
+                  }}
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => {
+                    deleteCommentHandler(comment.id);
+                  }}
+                >
+                  삭제
+                </button>
+                <div>{comment.comment}</div>
+              </div>
+            );
+          })}
       </SReviewBox>
     </>
   );
