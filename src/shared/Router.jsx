@@ -28,6 +28,7 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/:id" element={<Details />} />
           <Route path="/detail" element={<Details />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

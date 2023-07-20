@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom/dist';
+import * as S from './KakaoMap.styled';
+import { TbYoga } from 'react-icons/tb';
+import { GiMuscularTorso, GiAbstract020, GiMusicalNotes } from 'react-icons/gi';
+import { FaHeart, FaCaretRight } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
 
 const InfoDiv = styled.div`
   padding: 15px;
@@ -36,7 +41,18 @@ const getCurrentCoordinate = async () => {
 
 const KakaoMap = () => {
   const [selectedCategory, setSelectedCategory] = useState('헬스장');
+
+  const [countCategory, setCountCategory] = useState(0);
+  const CATEGORY_NAMES = ['헬스장', '필라테스', '요가', '댄스', '기타'];
+  const CATEGORY_ICONS = [<GiMuscularTorso />, <TbYoga />, <GiAbstract020 />, <GiMusicalNotes />, <FaHeart />];
   const [places, setPlaces] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [isFold, setIsFold] = useState(false);
+
+  const handleCategoryButtonClick = (event, index) => {
+    setCountCategory(index);
+    setSelectedCategory(CATEGORY_NAMES[index]);
+  };
 
   useEffect(() => {
     // setPlaces([])
@@ -323,42 +339,103 @@ const KakaoMap = () => {
   }, [selectedCategory]);
 
   return (
-    <div className="map_wrap" style={{ display: 'flex' }}>
-      <SearchWrap>
-        {/* <div id='search-result'>
-          <p className='result-text'>
-            <span className='result-keyword'>
-            </span>
-          </p>
-        </div> */}
-        <div>
-          <button onClick={() => setSelectedCategory('헬스장')}>헬스장</button>
-          <button onClick={() => setSelectedCategory('필라테스')}>필라테스</button>
-          <button onClick={() => setSelectedCategory('요가')}>요가</button>
-          <button onClick={() => setSelectedCategory('댄스')}>댄스</button>
-        </div>
-        <ul>
+    <S.MapLayout>
+      <div id="map" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}></div>
+
+      <S.ControlsBox>
+        <S.ControlsHeader>
+          <h1>
+            <Link to={'/'}>💪PROtein</Link>
+          </h1>
+          <div>
+            <button>로그인관련</button>
+          </div>
+        </S.ControlsHeader>
+        <S.ControlsSearch>
+          <form>
+            <input
+              type="text"
+              placeholder="장소, 주소 검색"
+              value={searchText}
+              onChange={(event) => {
+                setSearchText(event.target.value);
+              }}
+            />
+            <button title="검색" className={searchText ? 'active' : null}>
+              <FiSearch />
+            </button>
+          </form>
+        </S.ControlsSearch>
+        <S.ControlsCategory>
+          {/* <div>
+            <button onClick={() => setSelectedCategory('헬스장')}>헬스장</button>
+            <button onClick={() => setSelectedCategory('필라테스')}>필라테스</button>
+            <button onClick={() => setSelectedCategory('요가')}>요가</button>
+            <button onClick={() => setSelectedCategory('댄스')}>댄스</button>
+          </div> */}
+          <ul>
+            {CATEGORY_NAMES.map((char, index) => {
+              return (
+                <li
+                  key={'selectCategory_' + index + char}
+                  className={countCategory === index ? 'active' : null}
+                  title={countCategory === index ? '클릭됨' : null}
+                >
+                  <button type="button" onClick={(e) => handleCategoryButtonClick(e, index)}>
+                    <div>{CATEGORY_ICONS[index]}</div>
+                    {char}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </S.ControlsCategory>
+      </S.ControlsBox>
+
+      <S.PlacesBox className={isFold == true ? 'isFold' : null}>
+        <S.PlaceFoldBtn
+          title="리스트 작게보기"
+          onClick={() => {
+            setIsFold(!isFold);
+          }}
+        >
+          <FaCaretRight />
+        </S.PlaceFoldBtn>
+        <S.PlaceRank>
+          <strong>
+            ㅇㅇ동&nbsp;
+            {CATEGORY_NAMES[countCategory]}
+            <br />
+            TOP 5
+          </strong>
+        </S.PlaceRank>
+        <S.PlaceList>
           {places.map((place, index) => {
             //   console.log('쟉스의 place => ', place);
             return (
               <li key={`${index}_${place.id}`}>
-                <Link to={`/${place.id}`} state={{ test1: place }}>
-                  <strong>{place.place_name}</strong>
-                </Link>
-                {place.road_address_name ? <span>{place.road_address_name}</span> : null}
-                <span>{place.address_name}</span>
-                <span>{place.phone}</span>
+                <S.PlaceItemCategory>{place.category_name}</S.PlaceItemCategory>
+                <S.PlaceItemTitle>
+                  <Link to={`/${place.id}`} state={{ test1: place }}>
+                    {place.place_name}
+                  </Link>
+                </S.PlaceItemTitle>
+
+                {place.road_address_name ? (
+                  <S.PlaceItemRoadAddress>{place.road_address_name}</S.PlaceItemRoadAddress>
+                ) : null}
+                <S.PlaceItemAddress>(지번) {place.address_name}</S.PlaceItemAddress>
+                <S.PlaceItemPhone>{place.phone}</S.PlaceItemPhone>
               </li>
             );
           })}
-        </ul>
-      </SearchWrap>
-      <div id="map" style={{ width: '70%', height: '100vh', position: 'relative', overflow: 'hidden' }}></div>
+        </S.PlaceList>
+      </S.PlacesBox>
       <div id="menu_wrap" style={{ display: 'none' }}>
         <ul id="placesList"></ul>
         <div id="pagination"></div>
       </div>
-    </div>
+    </S.MapLayout>
   );
 };
 
