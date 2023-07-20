@@ -7,8 +7,7 @@ import Details from '../pages/Details';
 import Layout from './Layout';
 import { auth } from '../firebase';
 
-export const logInUser = auth
-
+export const logInUser = auth;
 
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

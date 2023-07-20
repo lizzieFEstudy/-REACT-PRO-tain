@@ -7,8 +7,7 @@ const Layout = ({ children }) => {
     <>
       <StHeader>
         <Header />
-      </StHeader>
-      {/* //children부분 이해 못함. 아냐 솔직히 칠드런 개념부터 헷갈린다고 하자. 아니 부모가 자식한테 데이터주는건 아는데.. */}      
+      </StHeader>    
       <StLayout>
         <div>{children}</div>
       </StLayout>
