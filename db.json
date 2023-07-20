@@ -1,0 +1,44 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "comment": "234",
+      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33",
+      "id": 2
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "users": [
+    {
+      "id": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "name": "이동준",
+      "email": "leedj1345@naver.com",
+      "pw": "password1!"
+    },
+    {
+      "id": "ODmzCjWvAQeiw4aMruw5lBvxrM12",
+      "name": "이동준2",
+      "email": "ourstar1345@gmail.com",
+      "pw": "password1!"
+    },
+    {
+      "id": "QOBAJA75L7a2KOCFXNZjtIksvbu1",
+      "name": "이동준3",
+      "email": "operational4@naver.com",
+      "pw": "password1!"
+    }
+  ]
+}
