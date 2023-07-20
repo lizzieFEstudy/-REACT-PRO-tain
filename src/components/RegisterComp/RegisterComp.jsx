@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
-// import { auth } from "../../firebase";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -12,13 +10,10 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 const RegisterComp = () => {
   const navigate = useNavigate();
 
-  //RQ : 추후에 useState 한번에 관리하는 방법으로 변경(객체 or useRef???) (07-17 16:34 동준)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [pwCheck, setPwCheck] = useState('');
-  // 현재 phoneNum은 포함하지 않음.
-  // const [phoneNum, setPhoneNUm] = useState("");
 
   const [nameMessage, setNameMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
@@ -61,19 +56,6 @@ const RegisterComp = () => {
   }
   const nameUsing = data?.map((item) => item.name);
   const emailUsing = data?.map((item) => item.email);
-
-  // const HandleName = (event) => {
-  //   event.preventDefault();
-
-  //   if (nameUsing.includes(name)) {
-  //     alert('누군가 이 닉네임을 사용중입니다!');
-  //     setIsNameAvailable(false);
-  //     return false;
-  //   } else {
-  //     alert('사용 가능한 닉네임입니다!');
-  //     setIsNameAvailable(true);
-  //   }
-  // };
 
   const HandleInputChange = (event, setState, setStateMessage) => {
     setStateMessage('');
@@ -161,7 +143,7 @@ const RegisterComp = () => {
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
 
-        // 회원가입 => 자동 로그인(진짜 자동 로그인인지 확인해야 함. 이 부분 불명확. 07-17 17:16 동준) => 미리 토큰을 받아 세션스토리지에 저장.
+        // 회원가입 => 자동 로그인(미리 토큰을 받아 세션스토리지에 저장)
         const user = userCredential.user;
         const token = await user.getIdToken();
         sessionStorage.setItem('token', token);

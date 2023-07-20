@@ -55,7 +55,7 @@ const LoginComp = () => {
       <StLoginForm onSubmit={HandleLoginSubmit}>
         <StLoginLogo>💪🏽REACT PROtein</StLoginLogo>
         <div>
-          <label>이메일 주소</label>
+          <label>이메일</label>
           <br />
           <StLoginInput type="text" value={email} onChange={(event) => HandleInputChange(event, setEmail)} />
         </div>
@@ -110,8 +110,12 @@ const StLoginInput = styled.input`
   height: 1rem;
   font-size: 16px;
   padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
   &:focus {
-    outline-color: #ff6e6e;
+    border-bottom: 2px solid #ff6e6e;
   }
 `
 
