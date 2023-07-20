@@ -23,6 +23,7 @@ const Router = () => {
       {isLoggedIn ? (
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/:id" element={<Details />} />
           <Route path="/detail" element={<Details />} />
           <Route path="/login" element={<Navigate to="/" />} />
         </Routes>
