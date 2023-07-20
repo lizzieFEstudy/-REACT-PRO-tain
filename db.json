@@ -11,6 +11,11 @@
       "id": 1,
       "body": "some comment",
       "postId": 1
+    },
+    {
+      "comment": "234",
+      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33",
+      "id": 2
     }
   ],
   "profile": {
