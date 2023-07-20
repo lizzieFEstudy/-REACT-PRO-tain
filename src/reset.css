@@ -101,6 +101,7 @@ section {
   display: block;
 }
 body {
+  font-family: 'Pretendard';
   line-height: 1;
 }
 ol,
@@ -115,7 +116,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 table {
