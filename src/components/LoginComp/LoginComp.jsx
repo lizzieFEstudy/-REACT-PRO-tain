@@ -41,7 +41,8 @@ const LoginComp = () => {
         const token = await user.getIdToken();
         sessionStorage.setItem('token', token);
         //추후에 window.location.reload 말고 Main page로 바로 가도록 고쳐야 함.
-        window.location.reload();
+        navigate("/")        
+        window.location.reload()
       } catch (error) {
         alert('로그인 인증 에러');
         setEmail('');
@@ -92,7 +93,7 @@ const StLoginForm = styled.form`
   min-height: 700px;
   width: 20%;
   height: 50%;
-  border: 5px solid #ff6e6e;
+  border: 5px solid #f25320;
   border-radius: 10%;
   box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
   margin: auto;
