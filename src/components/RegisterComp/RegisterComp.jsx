@@ -7,6 +7,7 @@ import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addUsers, getUsers } from '../../api/users';
+import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 
 const RegisterComp = () => {
   const navigate = useNavigate();
@@ -28,6 +29,9 @@ const RegisterComp = () => {
   const [isPw, setIsPw] = useState(false);
   const [isPwCheck, setIsPwCheck] = useState(false);
 
+  const [isShowPw, setIsShowPw] = useState(false);
+  const [isShowPwCheck, setIsShowPwCheck] = useState(false);
+
   const queryClient = useQueryClient();
   const mutation = useMutation(addUsers, {
     onSuccess: () => {
@@ -38,6 +42,13 @@ const RegisterComp = () => {
       alert('죄송합니다. 현재 서버가 불안정한 상태입니다. 최대한 빠르게 복구하겠습니다.');
     }
   });
+
+  const toggleShowPw = () => {
+    setIsShowPw(!isShowPw);
+  };
+  const toggleShowPwCheck = () => {
+    setIsShowPwCheck(!isShowPwCheck);
+  };
 
   // db.json에서 users collection Get
   const { data, isLoading, isError } = useQuery('users', getUsers);
@@ -205,30 +216,36 @@ const RegisterComp = () => {
         </StRegisterInputBox>
         <StRegisterInputBox>
           <label>비밀번호</label>
+          <StPwBox>
           <br />
           <StRegisterInput
             name="pw"
-            type="password"
+            type={isShowPw ? 'text' : 'password'}
             placeholder="영문 대소문자, 숫자, 특수문자 포함 8자 이상"
             value={pw}
             onChange={(event) => HandleInputChange(event, setPw, setPwMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
           <br />
+          <div>{isShowPw ? <AiFillEyeInvisible className="eyeIcon" onClick={toggleShowPw} /> : <AiFillEye className="eyeIcon" onClick={toggleShowPw} />}</div>
+          </StPwBox>
           <StRegisterMsg className="message"> {pwMessage} </StRegisterMsg>
         </StRegisterInputBox>
         <StRegisterInputBox>
           <label>비밀번호 확인</label>
           <br />
-          <StRegisterInput
-            name="pwCheck"
-            type="password"
-            placeholder="비밀번호와 동일하게 적어주세요!"
-            value={pwCheck}
-            onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
-            onBlur={(event) => HandleInputValidation(event)}
-          />
-          <br />
+          <StPwBox>
+            <StRegisterInput
+              name="pwCheck"
+              type={isShowPwCheck ? 'text' : 'password'}
+              placeholder="비밀번호와 동일하게 적어주세요!"
+              value={pwCheck}
+              onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
+              onBlur={(event) => HandleInputValidation(event)}
+            />
+            <div>{isShowPwCheck ? <AiFillEyeInvisible className="eyeIcon" onClick={toggleShowPwCheck} /> : <AiFillEye className="eyeIcon" onClick={toggleShowPwCheck} />}</div>
+            <br />
+          </StPwBox>
           <StRegisterMsg className="message"> {pwCheckMessage} </StRegisterMsg>
         </StRegisterInputBox>
         <StRegisterBtn>회원가입</StRegisterBtn>
@@ -263,6 +280,16 @@ const StRegisterForm = styled.form`
   box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
   margin: auto;
   gap: 1.5rem;
+
+  .eyeIcon {
+    font-size: 1.5rem;
+  }
+`;
+
+const StPwBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const StRegisterInputBox = styled.div`
@@ -277,10 +304,14 @@ const StRegisterInput = styled.input`
   height: 1rem;
   font-size: 16px;
   padding: 0.5rem;
-  min-width: 22rem;
+  min-width: 20rem;
   margin: 5px 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  transition-duration: 0.2s;
   &:focus {
-    outline-color: #ff6e6e;
+    border-bottom: 2px solid #ff6e6e;;
   }
 `;
 
@@ -325,3 +356,5 @@ const StGoLoginSpan = styled.span`
     font-weight: bold;
   }
 `;
+
+
