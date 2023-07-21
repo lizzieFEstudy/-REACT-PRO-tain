@@ -6,7 +6,6 @@ import { getComments, addComment, deleteComment, updateComment } from '../../api
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
-import uuid from 'react-uuid';
 
 function DetailBox() {
   const navigate = useNavigate();
@@ -14,11 +13,11 @@ function DetailBox() {
   const params = useParams();
   const { placeData } = useParams();
 
-  const [nickName, SetNickName] = useState();
-  const [comment, SetComment] = useState();
+  const [nickName, setNickName] = useState("");
+  const [comment, setComment] = useState("");
   const { isLoading, isError, data } = useQuery('comments', getComments);
-  const { id } = params;
-
+  const shopId = params.id; 
+  console.log("shopId=>", shopId)
   const queryClient = useQueryClient();
   const mutation = useMutation(addComment, {
     onSuccess: () => {
@@ -43,7 +42,7 @@ function DetailBox() {
 
     if (comment) {
       const newComment = {
-        id: uuid(),
+        shopId,
         nickName,
         comment,
         userId: auth.currentUser.uid
@@ -51,8 +50,8 @@ function DetailBox() {
 
       mutation.mutate(newComment);
 
-      SetNickName('');
-      SetComment('');
+      setNickName('');
+      setComment('');
     } else {
       alert('모든 항목을 입력하세요');
     }
@@ -72,8 +71,8 @@ function DetailBox() {
     }
   };
 
-  const commentHandler = (e) => {
-    SetComment(e.target.value);
+  const commentHandler = (event) => {
+    setComment(event.target.value);
   };
 
   return (
@@ -88,11 +87,11 @@ function DetailBox() {
       <SReviewBox>
         <h1>Reviews..</h1>
         <br />
-        <CommentInput type="text" value={comment} onChange={commentHandler} placeholder="내용을 입력하세요." />
+        <CommentInput type="text" value={comment} onChange={(event) => commentHandler(event)} placeholder="내용을 입력하세요." />
         <button onClick={addCommentHandler}>등록</button>
         <br />
         {data
-          ?.filter((comment) => comment.postId == params.id)
+          ?.filter((comment) => comment.shopId == shopId)
           .map((comment) => {
             return (
               <div key={comment.id}>
@@ -141,5 +140,5 @@ const CommentInput = styled.input`
   width: 500px;
   height: 30px;
   padding: 5px;
-  color: white;
+  color: black;
 `;
