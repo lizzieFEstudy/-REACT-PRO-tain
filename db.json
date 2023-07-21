@@ -13,7 +13,7 @@
       "comment": "코멘트아이디 실험용",
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "id": "N14XCGz"
-    },
+    }
   ],
   "users": [
     {
@@ -33,6 +33,12 @@
       "name": "이동준3",
       "email": "operational4@naver.com",
       "pw": "password1!"
+    },
+    {
+      "id": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
+      "name": "황대성",
+      "email": "klp2797@naver.com",
+      "pw": "hdssdh5025!!"
     }
   ]
 }
