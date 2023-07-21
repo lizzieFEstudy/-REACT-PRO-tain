@@ -10,7 +10,7 @@ function Details() {
 
   return (
     <>
-      <DetailInfo placeData={placeData} />
+      {/* <DetailInfo placeData={placeData} /> */}
       <DetailBox placeData={placeData} />
     </>
   );

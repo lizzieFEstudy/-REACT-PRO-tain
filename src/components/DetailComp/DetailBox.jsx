@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
@@ -9,7 +8,6 @@ import { auth } from '../../firebase';
 import { addShops, getShops, updateShops } from '../../api/shops';
 
 function DetailBox( { placeData }) {
-  const navigate = useNavigate();
 
   const params = useParams();
 
@@ -21,15 +19,12 @@ function DetailBox( { placeData }) {
   console.log("data=>",data?.map((item) => item.id))
   const shopId = params.id;
   //shop등록용
-  const { isLoading: shopLoading, isError: shopError, data: shopData } = useQuery('shops', getShops);
+  // const { isLoading: shopLoading, isError: shopError, data: shopData } = useQuery('shops', getShops);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
-    },
-    onError: () => {
-      alert("애드코멘트 오류")
     }
   });
 
@@ -45,28 +40,28 @@ function DetailBox( { placeData }) {
     }
   });
   /////shop 등록용 mutation-동준-/////
-  const addShopMutation = useMutation(addShops, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('shops');
-      alert('신규 shop 등록 성공');
-    },
-    onError: () => {
-      alert('신규 shop 등록 에러');
-    }
-  });
+  // const addShopMutation = useMutation(addShops, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries('shops');
+  //     alert('신규 shop 등록 성공');
+  //   },
+  //   onError: () => {
+  //     alert('신규 shop 등록 에러');
+  //   }
+  // });
 
-  const updateShopMutation = useMutation(updateShops, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('shops');
-      alert('shop 업데이트 성공');
-    },
-    onError: () => {
-      alert('shop 업데이트 에러');
-    }
-  });
+  // const updateShopMutation = useMutation(updateShops, {
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries('shops');
+  //     alert('shop 업데이트 성공');
+  //   },
+  //   onError: () => {
+  //     alert('shop 업데이트 에러');
+  //   }
+  // });
 
   /////shop 등록용 mutation-동준-////
-  console.log("shopData=>",shopData?.map((item)=> item.id))
+  // console.log("shopData=>",shopData?.map((item)=> item.id))
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
@@ -113,25 +108,25 @@ function DetailBox( { placeData }) {
     setRating(ratingValue);
   };
 
-  const addShopHandler = async () => {
-    if (!shopLoading) {
-      const shopExists = shopData?.some((item) => item.id === shopId);
-      if (!shopExists) {
-        const newShop = {
-          id: shopId,
-          comment: [Number(rate)]
-        };
-        addShopMutation.mutate(newShop);
-      } else {
-        const shopToUpdate = shopData.find((item) => item.id === shopId);
-        const updatedShop = {
-          ...shopToUpdate,
-          comment: [...shopToUpdate.comment, Number(rate)]
-        };
-        updateShopMutation.mutate({ shopId, updatedShop });
-      }
-    }
-  };
+  // const addShopHandler = async () => {
+  //   if (!shopLoading) {
+  //     const shopExists = shopData?.some((item) => item.id === shopId);
+  //     if (!shopExists) {
+  //       const newShop = {
+  //         id: shopId,
+  //         comment: [Number(rating)]
+  //       };
+  //       addShopMutation.mutate(newShop);
+  //     } else {
+  //       const shopToUpdate = shopData.find((item) => item.id === shopId);
+  //       const updatedShop = {
+  //         ...shopToUpdate,
+  //         comment: [...shopToUpdate.comment, Number(rating)]
+  //       };
+  //       updateShopMutation.mutate({ shopId, updatedShop });
+  //     }
+  //   }
+  // };
 
   return (
     <>
@@ -164,9 +159,7 @@ function DetailBox( { placeData }) {
                     수정
                   </button>
                   <button
-                    onClick={() => {
-                      deleteCommentHandler(comment.id);
-                    }}
+                    onClick={() => {deleteCommentHandler(comment.id)}}
                   >
                     삭제
                   </button>
