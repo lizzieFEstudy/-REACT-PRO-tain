@@ -12,6 +12,7 @@ function DetailBox() {
   const navigate = useNavigate();
 
   const params = useParams();
+  const { placeData } = useParams();
 
   const [nickName, SetNickName] = useState();
   const [comment, SetComment] = useState();
@@ -77,10 +78,12 @@ function DetailBox() {
 
   return (
     <>
-      <SInfoBox>
-        <h1>Protein Gym</h1>
-        <div>⭐️ 7.5/10 방문자 리뷰 300</div>
-      </SInfoBox>
+      {placeData && (
+        <SInfoBox>
+          <h1>{placeData.place_name}</h1>
+          <div>⭐️ 7.5/10 방문자 리뷰 300</div>
+        </SInfoBox>
+      )}
 
       <SReviewBox>
         <h1>Reviews..</h1>
@@ -122,7 +125,7 @@ export default DetailBox;
 
 const SInfoBox = styled.div`
   flex: 1;
-  margin: 30px;
+  margin: 500px;
 `;
 
 const SReviewBox = styled.div`
