@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom/dist';
-import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom/dist';
+import { useQuery } from 'react-query';
 import { getUsers } from '../../api/users';
 import { styled } from 'styled-components';
 
