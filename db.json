@@ -1,26 +1,20 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
   "comments": [
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "id": "3edbd0de-df39-f586-5deb-8b5ca4c2c356",
+      "shopId": "27091506",
+      "nickName": "",
+      "comment": "에이블헬스장",
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252"
     },
     {
-      "comment": "234",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33",
-      "id": 2
-    }
+      "shopId": "27091506",
+      "nickName": "",
+      "comment": "코멘트아이디 실험용",
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": "N14XCGz"
+    },
   ],
-  "profile": {
-    "name": "typicode"
-  },
   "users": [
     {
       "id": "qsn5T77abRgBEYiDHYCClt2EB252",

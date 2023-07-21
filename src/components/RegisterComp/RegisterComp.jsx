@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
-// import { auth } from "../../firebase";
-// import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addUsers, getUsers } from '../../api/users';
+import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 
 const RegisterComp = () => {
   const navigate = useNavigate();
 
-  //RQ : 추후에 useState 한번에 관리하는 방법으로 변경(객체 or useRef???) (07-17 16:34 동준)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [pwCheck, setPwCheck] = useState('');
-  // 현재 phoneNum은 포함하지 않음.
-  // const [phoneNum, setPhoneNUm] = useState("");
 
   const [nameMessage, setNameMessage] = useState('');
   const [emailMessage, setEmailMessage] = useState('');
@@ -27,6 +23,9 @@ const RegisterComp = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPw, setIsPw] = useState(false);
   const [isPwCheck, setIsPwCheck] = useState(false);
+
+  const [isShowPw, setIsShowPw] = useState(false);
+  const [isShowPwCheck, setIsShowPwCheck] = useState(false);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(addUsers, {
@@ -39,6 +38,13 @@ const RegisterComp = () => {
     }
   });
 
+  const toggleShowPw = () => {
+    setIsShowPw(!isShowPw);
+  };
+  const toggleShowPwCheck = () => {
+    setIsShowPwCheck(!isShowPwCheck);
+  };
+
   // db.json에서 users collection Get
   const { data, isLoading, isError } = useQuery('users', getUsers);
   if (isLoading) {
@@ -50,19 +56,6 @@ const RegisterComp = () => {
   }
   const nameUsing = data?.map((item) => item.name);
   const emailUsing = data?.map((item) => item.email);
-
-  // const HandleName = (event) => {
-  //   event.preventDefault();
-
-  //   if (nameUsing.includes(name)) {
-  //     alert('누군가 이 닉네임을 사용중입니다!');
-  //     setIsNameAvailable(false);
-  //     return false;
-  //   } else {
-  //     alert('사용 가능한 닉네임입니다!');
-  //     setIsNameAvailable(true);
-  //   }
-  // };
 
   const HandleInputChange = (event, setState, setStateMessage) => {
     setStateMessage('');
@@ -150,7 +143,7 @@ const RegisterComp = () => {
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
 
-        // 회원가입 => 자동 로그인(진짜 자동 로그인인지 확인해야 함. 이 부분 불명확. 07-17 17:16 동준) => 미리 토큰을 받아 세션스토리지에 저장.
+        // 회원가입 => 자동 로그인(미리 토큰을 받아 세션스토리지에 저장)
         const user = userCredential.user;
         const token = await user.getIdToken();
         sessionStorage.setItem('token', token);
@@ -205,30 +198,36 @@ const RegisterComp = () => {
         </StRegisterInputBox>
         <StRegisterInputBox>
           <label>비밀번호</label>
+          <StPwBox>
           <br />
           <StRegisterInput
             name="pw"
-            type="password"
+            type={isShowPw ? 'text' : 'password'}
             placeholder="영문 대소문자, 숫자, 특수문자 포함 8자 이상"
             value={pw}
             onChange={(event) => HandleInputChange(event, setPw, setPwMessage)}
             onBlur={(event) => HandleInputValidation(event)}
           />
           <br />
+          <div>{isShowPw ? <AiFillEyeInvisible className="eyeIcon" onClick={toggleShowPw} /> : <AiFillEye className="eyeIcon" onClick={toggleShowPw} />}</div>
+          </StPwBox>
           <StRegisterMsg className="message"> {pwMessage} </StRegisterMsg>
         </StRegisterInputBox>
         <StRegisterInputBox>
           <label>비밀번호 확인</label>
           <br />
-          <StRegisterInput
-            name="pwCheck"
-            type="password"
-            placeholder="비밀번호와 동일하게 적어주세요!"
-            value={pwCheck}
-            onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
-            onBlur={(event) => HandleInputValidation(event)}
-          />
-          <br />
+          <StPwBox>
+            <StRegisterInput
+              name="pwCheck"
+              type={isShowPwCheck ? 'text' : 'password'}
+              placeholder="비밀번호와 동일하게 적어주세요!"
+              value={pwCheck}
+              onChange={(event) => HandleInputChange(event, setPwCheck, setPwCheckMessage)}
+              onBlur={(event) => HandleInputValidation(event)}
+            />
+            <div>{isShowPwCheck ? <AiFillEyeInvisible className="eyeIcon" onClick={toggleShowPwCheck} /> : <AiFillEye className="eyeIcon" onClick={toggleShowPwCheck} />}</div>
+            <br />
+          </StPwBox>
           <StRegisterMsg className="message"> {pwCheckMessage} </StRegisterMsg>
         </StRegisterInputBox>
         <StRegisterBtn>회원가입</StRegisterBtn>
@@ -263,6 +262,16 @@ const StRegisterForm = styled.form`
   box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
   margin: auto;
   gap: 1.5rem;
+
+  .eyeIcon {
+    font-size: 1.5rem;
+  }
+`;
+
+const StPwBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const StRegisterInputBox = styled.div`
@@ -277,10 +286,14 @@ const StRegisterInput = styled.input`
   height: 1rem;
   font-size: 16px;
   padding: 0.5rem;
-  min-width: 22rem;
+  min-width: 20rem;
   margin: 5px 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid black;
+  transition-duration: 0.2s;
   &:focus {
-    outline-color: #ff6e6e;
+    border-bottom: 2px solid #ff6e6e;;
   }
 `;
 
@@ -325,3 +338,5 @@ const StGoLoginSpan = styled.span`
     font-weight: bold;
   }
 `;
+
+

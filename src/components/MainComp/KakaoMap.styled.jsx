@@ -3,10 +3,14 @@ import styled from 'styled-components';
 export const MapLayout = styled.div`
   overflow: hidden;
   position: absolute;
-  top: 0;
+  top: 5.0rem;
   left: 0;
   width: 100%;
   height: 100%;
+
+  .testClass {
+    background: #fab;
+  }
 `;
 
 // 컨트롤러

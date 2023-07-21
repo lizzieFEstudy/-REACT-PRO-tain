@@ -11,12 +11,13 @@ function DetailBox() {
   const navigate = useNavigate();
 
   const params = useParams();
+  const { placeData } = useParams();
 
-  const [nickName, SetNickName] = useState();
-  const [comment, SetComment] = useState();
+  const [nickName, setNickName] = useState("");
+  const [comment, setComment] = useState("");
   const { isLoading, isError, data } = useQuery('comments', getComments);
-  const { id } = params;
-
+  const shopId = params.id; 
+  console.log("shopId=>", shopId)
   const queryClient = useQueryClient();
   const mutation = useMutation(addComment, {
     onSuccess: () => {
@@ -30,12 +31,18 @@ function DetailBox() {
     }
   });
 
+  const updateMutation = useMutation(updateComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('comments');
+    }
+  });
+
   const addCommentHandler = async (e) => {
     e.preventDefault();
 
     if (comment) {
       const newComment = {
-        // id: id,
+        shopId,
         nickName,
         comment,
         userId: auth.currentUser.uid
@@ -43,8 +50,8 @@ function DetailBox() {
 
       mutation.mutate(newComment);
 
-      SetNickName('');
-      SetComment('');
+      setNickName('');
+      setComment('');
     } else {
       alert('모든 항목을 입력하세요');
     }
@@ -57,27 +64,57 @@ function DetailBox() {
     }
   };
 
-  const commentHandler = (e) => {
-    SetComment(e.target.value);
+  const updateCommentHandler = (id) => {
+    const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
+    if (confirmed) {
+      updateMutation.mutate(id);
+    }
+  };
+
+  const commentHandler = (event) => {
+    setComment(event.target.value);
   };
 
   return (
     <>
-      <SInfoBox>
-        <h1>Protein Gym</h1>
-        <div>⭐️ 7.5/10 방문자 리뷰 300</div>
-      </SInfoBox>
+      {placeData && (
+        <SInfoBox>
+          <h1>{placeData.place_name}</h1>
+          <div>⭐️ 7.5/10 방문자 리뷰 300</div>
+        </SInfoBox>
+      )}
 
       <SReviewBox>
         <h1>Reviews..</h1>
         <br />
-        <CommentInput type="text" value={comment} onChange={commentHandler} placeholder="내용을 입력하세요." />
+        <CommentInput type="text" value={comment} onChange={(event) => commentHandler(event)} placeholder="내용을 입력하세요." />
         <button onClick={addCommentHandler}>등록</button>
         <br />
-        <div>name| 별점 7.8| 22.04.05</div>
-        <button>수정</button>
-        <button>삭제</button>
-        <div>comment...comment...comment...</div>
+        {data
+          ?.filter((comment) => comment.shopId == shopId)
+          .map((comment) => {
+            return (
+              <div key={comment.id}>
+                {/* <div>{users.name}</div> */}
+                <div>name| 별점 7.8| 22.04.05</div>
+                <button
+                  onClick={() => {
+                    updateCommentHandler(comment.id);
+                  }}
+                >
+                  수정
+                </button>
+                <button
+                  onClick={() => {
+                    deleteCommentHandler(comment.id);
+                  }}
+                >
+                  삭제
+                </button>
+                <div>{comment.comment}</div>
+              </div>
+            );
+          })}
       </SReviewBox>
     </>
   );
@@ -87,7 +124,7 @@ export default DetailBox;
 
 const SInfoBox = styled.div`
   flex: 1;
-  margin: 30px;
+  margin: 500px;
 `;
 
 const SReviewBox = styled.div`
@@ -103,5 +140,5 @@ const CommentInput = styled.input`
   width: 500px;
   height: 30px;
   padding: 5px;
-  color: white;
+  color: black;
 `;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { Link, useNavigate } from 'react-router-dom/dist';
-import { useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom/dist';
+import { useQuery } from 'react-query';
 import { getUsers } from '../../api/users';
 import { styled } from 'styled-components';
 
@@ -41,7 +41,8 @@ const LoginComp = () => {
         const token = await user.getIdToken();
         sessionStorage.setItem('token', token);
         //추후에 window.location.reload 말고 Main page로 바로 가도록 고쳐야 함.
-        window.location.reload();
+        navigate("/")        
+        window.location.reload()
       } catch (error) {
         alert('로그인 인증 에러');
         setEmail('');
@@ -55,7 +56,7 @@ const LoginComp = () => {
       <StLoginForm onSubmit={HandleLoginSubmit}>
         <StLoginLogo>💪🏽REACT PROtein</StLoginLogo>
         <div>
-          <label>이메일 주소</label>
+          <label>이메일</label>
           <br />
           <StLoginInput type="text" value={email} onChange={(event) => HandleInputChange(event, setEmail)} />
         </div>
@@ -92,7 +93,7 @@ const StLoginForm = styled.form`
   min-height: 700px;
   width: 20%;
   height: 50%;
-  border: 5px solid #ff6e6e;
+  border: 5px solid #f25320;
   border-radius: 10%;
   box-shadow: rgb(255, 110, 110) 20px 30px 30px -10px;
   margin: auto;
@@ -110,8 +111,12 @@ const StLoginInput = styled.input`
   height: 1rem;
   font-size: 16px;
   padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
   &:focus {
-    outline-color: #ff6e6e;
+    border-bottom: 2px solid #ff6e6e;
   }
 `
 
