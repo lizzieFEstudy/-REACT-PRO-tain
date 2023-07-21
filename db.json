@@ -1,6 +1,31 @@
 {
   "shops": [],
-  "comments": [],
+  "comments": [
+    {
+      "shopId": "27091506",
+      "nickName": "",
+      "comment": "코멘트아이디생성용",
+      "rating": 5,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": "코멘트아이디생성용"
+    },
+    {
+      "shopId": "679322947",
+      "nickName": "",
+      "comment": "ㅁㅁㅁㅁㅁ",
+      "rating": 4,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": "c3tqjf6"
+    },
+    {
+      "shopId": "679322947",
+      "nickName": "",
+      "comment": "ㄴㄴㄴㄴ",
+      "rating": 2,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": "smY3xrZ"
+    }
+  ],
   "users": [
     {
       "id": "qsn5T77abRgBEYiDHYCClt2EB252",

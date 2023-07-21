@@ -1,11 +1,10 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
-import { addShops, getShops, updateShops } from '../../api/shops';
 
 function DetailBox( { placeData }) {
 
@@ -18,8 +17,6 @@ function DetailBox( { placeData }) {
   const { isLoading, isError, data } = useQuery('comments', getComments);
   console.log("data=>",data?.map((item) => item.id))
   const shopId = params.id;
-  //shop등록용
-  // const { isLoading: shopLoading, isError: shopError, data: shopData } = useQuery('shops', getShops);
 
   const queryClient = useQueryClient();
   const mutation = useMutation(addComment, {
@@ -39,29 +36,6 @@ function DetailBox( { placeData }) {
       queryClient.invalidateQueries('comments');
     }
   });
-  /////shop 등록용 mutation-동준-/////
-  // const addShopMutation = useMutation(addShops, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('shops');
-  //     alert('신규 shop 등록 성공');
-  //   },
-  //   onError: () => {
-  //     alert('신규 shop 등록 에러');
-  //   }
-  // });
-
-  // const updateShopMutation = useMutation(updateShops, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries('shops');
-  //     alert('shop 업데이트 성공');
-  //   },
-  //   onError: () => {
-  //     alert('shop 업데이트 에러');
-  //   }
-  // });
-
-  /////shop 등록용 mutation-동준-////
-  // console.log("shopData=>",shopData?.map((item)=> item.id))
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
@@ -75,7 +49,7 @@ function DetailBox( { placeData }) {
       shopId,
       nickName,
       comment,
-      rating, // Save the selected rating in the new comment object
+      rating,
       userId: auth.currentUser.uid
     };
 
@@ -83,7 +57,7 @@ function DetailBox( { placeData }) {
 
     setNickName('');
     setComment('');
-    setRating(0); // Reset rating after adding the comment
+    setRating(0);
   };
 
   const deleteCommentHandler = (id) => {
@@ -107,26 +81,6 @@ function DetailBox( { placeData }) {
   const handleRatingSelection = (ratingValue) => {
     setRating(ratingValue);
   };
-
-  // const addShopHandler = async () => {
-  //   if (!shopLoading) {
-  //     const shopExists = shopData?.some((item) => item.id === shopId);
-  //     if (!shopExists) {
-  //       const newShop = {
-  //         id: shopId,
-  //         comment: [Number(rating)]
-  //       };
-  //       addShopMutation.mutate(newShop);
-  //     } else {
-  //       const shopToUpdate = shopData.find((item) => item.id === shopId);
-  //       const updatedShop = {
-  //         ...shopToUpdate,
-  //         comment: [...shopToUpdate.comment, Number(rating)]
-  //       };
-  //       updateShopMutation.mutate({ shopId, updatedShop });
-  //     }
-  //   }
-  // };
 
   return (
     <>

@@ -8,12 +8,7 @@ const addComment = async (newComment) => {
   await axios.post(`${process.env.REACT_APP_SERVER_URL}/comments`, newComment);
 };
 const deleteComment = async (id) => {
-  try {
-    console.log("id===>",id)
     await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${id}`);
-  } catch (error) {
-    console.error(error);
-  }
 };
 const updateComment = async ({ id, updatedComment }) => {
   await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${id}`, updatedComment);
