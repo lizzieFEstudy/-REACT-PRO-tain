@@ -16,12 +16,18 @@ const DetailBox = ({ placeData }) => {
   const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+  const [displayedComments, setDisplayedComments] = useState([]);
 
-  const { isLoading, isError, data } = useQuery('comments', getComments);
+  const { isLoading, isError, data } = useQuery('comments', getComments, {
+    onSuccess: (data) => {
+      setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
+    }
+  });
 
   const shopId = params.id;
   console.log('shopId=>', shopId);
   const queryClient = useQueryClient();
+
   const mutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
@@ -67,6 +73,7 @@ const DetailBox = ({ placeData }) => {
     const confirmed = window.confirm('이 댓글을 삭제하시겠습니까?');
     if (confirmed) {
       deleteMutation.mutate(id);
+      setDisplayedComments((prevComments) => prevComments.filter((comment) => comment.id !== id));
     }
   };
 
@@ -107,7 +114,9 @@ const DetailBox = ({ placeData }) => {
               return (
                 <div key={comment.id}>
                   {/* <div>{users.name}</div> */}
-                  <div>name| 별점 7.8| 22.04.05</div>
+                  <strong>
+                    name| 별점 {comment.rating.toFixed(1)}| {comment.date}
+                  </strong>
                   <button
                     onClick={() => {
                       updateCommentHandler(comment.id);
@@ -131,7 +140,6 @@ const DetailBox = ({ placeData }) => {
           <h1>리뷰를 남겨보세요</h1>
           <br />
           <div>
-            {/* Star rating selection buttons */}
             <StarButton active={rating >= 1} onClick={() => handleRatingSelection(1)}>
               ★
             </StarButton>
