@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom/dist';
 import DetailBox from '../components/DetailComp/DetailBox';
-import DetailInfo from '../components/DetailComp/DetailInfo';
 
 function Details() {
   const location = useLocation();
@@ -10,7 +9,6 @@ function Details() {
 
   return (
     <>
-      {/* <DetailInfo placeData={placeData} /> */}
       <DetailBox placeData={placeData} />
     </>
   );

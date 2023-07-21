@@ -1,24 +1,36 @@
+
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
+import { GiStoneCrafting } from 'react-icons/gi';
+import { addShops, getShops, updateShops } from '../../api/shops';
 
-function DetailBox( { placeData }) {
-
+const DetailBox = ({ placeData }) => {
+  const navigate = useNavigate();
   const params = useParams();
 
   const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-  const { isLoading, isError, data } = useQuery('comments', getComments);
-  console.log("data=>",data?.map((item) => item.id))
+  const [displayedComments, setDisplayedComments] = useState([]);
+
+  const { isLoading, isError, data } = useQuery('comments', getComments, {
+    onSuccess: (data) => {
+      setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
+    }
+  });
+  const { isLoading: shopLoading, isError: shopError, data: shopData } = useQuery('shops', getShops);
+
   const shopId = params.id;
+  console.log('shopId=>', shopId);
 
   const queryClient = useQueryClient();
+
   const mutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
@@ -36,6 +48,29 @@ function DetailBox( { placeData }) {
       queryClient.invalidateQueries('comments');
     }
   });
+
+   /////shop 등록용 mutation-동준-/////
+  const addShopMutation = useMutation(addShops, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('shops');
+      alert('신규 shop 등록 성공');
+    },
+    onError: () => {
+      alert('신규 shop 등록 에러');
+    }
+  });
+
+  const updateShopMutation = useMutation(updateShops, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('shops');
+      alert('shop 업데이트 성공');
+    },
+    onError: () => {
+      alert('shop 업데이트 에러');
+    }
+  });
+
+  /////shop 등록용 mutation-동준-////
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
@@ -64,6 +99,7 @@ function DetailBox( { placeData }) {
     const confirmed = window.confirm('이 댓글을 삭제하시겠습니까?');
     if (confirmed) {
       deleteMutation.mutate(id);
+      setDisplayedComments((prevComments) => prevComments.filter((comment) => comment.id !== id));
     }
   };
 
@@ -80,6 +116,26 @@ function DetailBox( { placeData }) {
 
   const handleRatingSelection = (ratingValue) => {
     setRating(ratingValue);
+  };
+
+    const addShopHandler = async () => {
+    if (!shopLoading) {
+      const shopExists = shopData?.some((item) => item.id === shopId);
+      if (!shopExists) {
+        const newShop = {
+          id: shopId,
+          comment: [Number(rating)]
+        };
+        addShopMutation.mutate(newShop);
+      } else {
+        const shopToUpdate = shopData.find((item) => item.id === shopId);
+        const updatedShop = {
+          ...shopToUpdate,
+          comment: [...shopToUpdate.comment, Number(rating)]
+        };
+        updateShopMutation.mutate({ shopId, updatedShop });
+      }
+    }
   };
 
   return (
@@ -104,7 +160,9 @@ function DetailBox( { placeData }) {
               return (
                 <div key={comment.id}>
                   {/* <div>{users.name}</div> */}
-                  <div>name| 별점 7.8| 22.04.05</div>
+                  <strong>
+                    name| 별점 {comment.rating.toFixed(1)}| {comment.date}
+                  </strong>
                   <button
                     onClick={() => {
                       updateCommentHandler(comment.id);
@@ -113,7 +171,9 @@ function DetailBox( { placeData }) {
                     수정
                   </button>
                   <button
-                    onClick={() => {deleteCommentHandler(comment.id)}}
+                    onClick={() => {
+                      deleteCommentHandler(comment.id);
+                    }}
                   >
                     삭제
                   </button>
@@ -126,7 +186,6 @@ function DetailBox( { placeData }) {
           <h1>리뷰를 남겨보세요</h1>
           <br />
           <div>
-            {/* Star rating selection buttons */}
             <StarButton active={rating >= 1} onClick={() => handleRatingSelection(1)}>
               ★
             </StarButton>
@@ -154,7 +213,7 @@ function DetailBox( { placeData }) {
       </StDetailPage>
     </>
   );
-}
+};
 
 export default DetailBox;
 
