@@ -7,6 +7,10 @@ export const MapLayout = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+
+  .testClass {
+    background: #fab;
+  }
 `;
 
 // 컨트롤러

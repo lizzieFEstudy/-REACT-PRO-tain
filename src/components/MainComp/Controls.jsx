@@ -6,16 +6,20 @@ import { GiMuscularTorso, GiAbstract020, GiMusicalNotes } from 'react-icons/gi';
 import { FaHeart } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 
-const Controls = ({ CATEGORY_NAMES, countCategory, setCountCategory }) => {
+const Controls = ({ CATEGORY_NAMES, countCategory, setCountCategory, setSearchSubmitValue }) => {
   const CATEGORY_ICONS = [<GiMuscularTorso />, <TbYoga />, <GiAbstract020 />, <GiMusicalNotes />, <FaHeart />];
   const [searchText, setSearchText] = useState('');
 
   const handleCategoryButtonClick = (index) => {
+    setSearchSubmitValue(null);
     setCountCategory(index);
+    setSearchText('');
   };
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
+    setSearchSubmitValue(searchText);
+    // setCountCategory(-1);
     // searchPlaces(selectedCategory);
   };
 
@@ -33,7 +37,7 @@ const Controls = ({ CATEGORY_NAMES, countCategory, setCountCategory }) => {
         <form onSubmit={onSubmitHandler}>
           <input
             type="text"
-            placeholder="장소, 주소 검색"
+            placeholder={`${CATEGORY_NAMES[countCategory]} 장소 검색`}
             value={searchText}
             onChange={(event) => {
               setSearchText(event.target.value);

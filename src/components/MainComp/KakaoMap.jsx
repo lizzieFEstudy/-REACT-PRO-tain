@@ -29,6 +29,7 @@ const KakaoMap = () => {
   const CATEGORY_NAMES = ['헬스장', '필라테스', '요가', '댄스', '기타'];
   const [countCategory, setCountCategory] = useState(0);
   const [places, setPlaces] = useState([]);
+  const [searchSubmitValue, setSearchSubmitValue] = useState(null);
 
   useEffect(() => {
     const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -60,6 +61,7 @@ const KakaoMap = () => {
     /**
      * 헬스장 검색결과 표시
      */
+    // const searchMap = () => {
     // 마커를 담을 배열입니다
     let markers = [];
     let currentInfowindow = null;
@@ -88,6 +90,15 @@ const KakaoMap = () => {
         default:
           keyword = '헬스장';
           break;
+        // default:
+        //   // keyword = category;
+        //   keyword = `${category} ${CATEGORY_NAMES[countCategory]}`;
+        //   break;
+      }
+
+      if (searchSubmitValue) {
+        keyword += searchSubmitValue;
+        // console.log('키워드 어케되는겨 =>', keyword);
       }
 
       const currentCoordinate = changedCoordinate ? changedCoordinate : await getCurrentCoordinate();
@@ -122,6 +133,8 @@ const KakaoMap = () => {
 
     // 마커를 표출하는 함수입니다
     function displayPlaces(places) {
+      const bounds = new kakao.maps.LatLngBounds();
+
       // 지도에 표시되고 있는 마커를 제거합니다
       removeMarker();
 
@@ -133,6 +146,9 @@ const KakaoMap = () => {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         // bounds.extend(placePosition);
+        if (searchSubmitValue) {
+          bounds.extend(placePosition);
+        }
 
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
@@ -141,14 +157,6 @@ const KakaoMap = () => {
           kakao.maps.event.addListener(marker, 'click', function () {
             displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
           });
-
-          // kakao.maps.event.addListener(marker, 'mouseout', function () {
-          //   infowindow.close();
-          // });
-
-          // itemEl.onmouseout = function () {
-          //   infowindow.close();
-          // };
         })(
           marker,
           places[i].place_name,
@@ -162,6 +170,9 @@ const KakaoMap = () => {
 
       // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
       // map.setBounds(bounds);
+      if (searchSubmitValue) {
+        map.setBounds(bounds);
+      }
     }
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
@@ -207,7 +218,7 @@ const KakaoMap = () => {
         displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
       });
 
-      const contentInner = `<div style="padding : 0px 0px 20px 0px; width: 272px;">
+      const contentInner = `<div style="padding : 0px 0px 20px 0px; width: 272px;" class="testClass">
         <div style="background : orange; padding : 10px 0px">
           <h1>${title}</h1>
           <p style="font-size:12px; letter-spacing:-2px">${categoryName}</p>
@@ -230,12 +241,15 @@ const KakaoMap = () => {
       infowindow.open(map, marker);
       currentInfowindow = infowindow;
     }
+    // };
 
     /**
      * 중심좌표 변경 이벤트
      */
     // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
     kakao.maps.event.addListener(map, 'idle', function () {
+      if (searchSubmitValue) return;
+
       // 지도의  레벨을 얻어옵니다
       //   const level = map.getLevel();
 
@@ -249,13 +263,25 @@ const KakaoMap = () => {
 
       searchPlaces(CATEGORY_NAMES[countCategory], coordinate);
     });
-  }, [countCategory]);
+
+    /**
+     * 검색 기능
+     */
+    if (searchSubmitValue) {
+      searchPlaces(CATEGORY_NAMES[countCategory]);
+    }
+  }, [countCategory, searchSubmitValue]);
 
   return (
     <S.MapLayout>
       <div id="map" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}></div>
 
-      <Controls CATEGORY_NAMES={CATEGORY_NAMES} countCategory={countCategory} setCountCategory={setCountCategory} />
+      <Controls
+        CATEGORY_NAMES={CATEGORY_NAMES}
+        countCategory={countCategory}
+        setCountCategory={setCountCategory}
+        setSearchSubmitValue={setSearchSubmitValue}
+      />
 
       <PlaceResult CATEGORY_NAMES={CATEGORY_NAMES} countCategory={countCategory} places={places} />
     </S.MapLayout>
