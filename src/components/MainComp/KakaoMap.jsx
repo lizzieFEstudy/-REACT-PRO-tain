@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as S from './KakaoMap.styled';
 import Controls from './Controls';
 import PlaceResult from './PlaceResult';
+import { useNavigate } from 'react-router';
 
 const { kakao } = window;
 
@@ -24,6 +25,7 @@ const getCurrentCoordinate = async () => {
 };
 
 const KakaoMap = () => {
+  const navigate = useNavigate();
   const CATEGORY_NAMES = ['헬스장', '필라테스', '요가', '댄스', '기타'];
   const [countCategory, setCountCategory] = useState(0);
   const [places, setPlaces] = useState([]);
@@ -135,9 +137,9 @@ const KakaoMap = () => {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
-        ((marker, title, address, phone, categoryName) => {
+        ((marker, title, address, phone, categoryName, placeId, place) => {
           kakao.maps.event.addListener(marker, 'click', function () {
-            displayInfowindow(marker, title, address, phone, categoryName);
+            displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
           });
 
           // kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -147,7 +149,15 @@ const KakaoMap = () => {
           // itemEl.onmouseout = function () {
           //   infowindow.close();
           // };
-        })(marker, places[i].place_name, places[i].address_name, places[i].phone, places[i].category_name);
+        })(
+          marker,
+          places[i].place_name,
+          places[i].address_name,
+          places[i].phone,
+          places[i].category_name,
+          places[i].id,
+          places[i]
+        );
       }
 
       // // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
@@ -189,19 +199,33 @@ const KakaoMap = () => {
 
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
-    function displayInfowindow(marker, title, address, phone, categoryName) {
+    function displayInfowindow(marker, title, address, phone, categoryName, placeId, place) {
       if (currentInfowindow) {
         currentInfowindow.close();
       }
-      const content = `<div style="padding : 0px 0px 20px 0px; width: 272px;">
+      kakao.maps.event.addListener(marker, 'click', function () {
+        displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
+      });
+
+      const contentInner = `<div style="padding : 0px 0px 20px 0px; width: 272px;">
         <div style="background : orange; padding : 10px 0px">
           <h1>${title}</h1>
           <p style="font-size:12px; letter-spacing:-2px">${categoryName}</p>
           </div>
           <p>${address}</p>
           <p>${phone}</p>
-          <a href="">상세보기</a>
           </div>`;
+
+      let content = document.createElement('div');
+      content.innerHTML = contentInner;
+
+      let closeBtn = document.createElement('button');
+      closeBtn.innerHTML = '상세보기';
+      closeBtn.onclick = function () {
+        navigate(`/${placeId}`, { state: { test1: place } });
+      };
+      content.appendChild(closeBtn);
+
       infowindow.setContent(content);
       infowindow.open(map, marker);
       currentInfowindow = infowindow;
