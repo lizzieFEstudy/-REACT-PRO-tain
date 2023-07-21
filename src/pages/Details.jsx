@@ -10,7 +10,6 @@ function Details() {
 
   return (
     <>
-      <DetailInfo placeData={placeData} />
       <DetailBox placeData={placeData} />
     </>
   );
