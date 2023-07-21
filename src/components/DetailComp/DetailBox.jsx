@@ -6,6 +6,7 @@ import { getComments, addComment, deleteComment, updateComment } from '../../api
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
+import { GiStoneCrafting } from 'react-icons/gi';
 
 const DetailBox = ({ placeData }) => {
   const navigate = useNavigate();
@@ -14,7 +15,10 @@ const DetailBox = ({ placeData }) => {
 
   const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+
   const { isLoading, isError, data } = useQuery('comments', getComments);
+
   const shopId = params.id;
   console.log('shopId=>', shopId);
   const queryClient = useQueryClient();
@@ -39,21 +43,24 @@ const DetailBox = ({ placeData }) => {
   const addCommentHandler = async (e) => {
     e.preventDefault();
 
-    if (comment) {
-      const newComment = {
-        shopId,
-        nickName,
-        comment,
-        userId: auth.currentUser.uid
-      };
-
-      mutation.mutate(newComment);
-
-      setNickName('');
-      setComment('');
-    } else {
+    if (!comment || rating === 0) {
       alert('모든 항목을 입력하세요');
+      return;
     }
+
+    const newComment = {
+      shopId,
+      nickName,
+      comment,
+      rating, // Save the selected rating in the new comment object
+      userId: auth.currentUser.uid
+    };
+
+    mutation.mutate(newComment);
+
+    setNickName('');
+    setComment('');
+    setRating(0); // Reset rating after adding the comment
   };
 
   const deleteCommentHandler = (id) => {
@@ -74,6 +81,10 @@ const DetailBox = ({ placeData }) => {
     setComment(event.target.value);
   };
 
+  const handleRatingSelection = (ratingValue) => {
+    setRating(ratingValue);
+  };
+
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
@@ -89,15 +100,6 @@ const DetailBox = ({ placeData }) => {
           <div>{placeData?.phone}</div>
         </StDetailBox>
         <StDetailBox size="placeReviews">
-          <h1>Reviews..</h1>
-          <br />
-          <CommentInput
-            type="text"
-            value={comment}
-            onChange={(event) => commentHandler(event)}
-            placeholder="내용을 입력하세요."
-          />
-          <button onClick={addCommentHandler}>등록</button>
           <br />
           {data
             ?.filter((comment) => comment.shopId == shopId)
@@ -125,6 +127,35 @@ const DetailBox = ({ placeData }) => {
               );
             })}
         </StDetailBox>
+        <StDetailBox size="placeDetail">
+          <h1>리뷰를 남겨보세요</h1>
+          <br />
+          <div>
+            {/* Star rating selection buttons */}
+            <StarButton active={rating >= 1} onClick={() => handleRatingSelection(1)}>
+              ★
+            </StarButton>
+            <StarButton active={rating >= 2} onClick={() => handleRatingSelection(2)}>
+              ★
+            </StarButton>
+            <StarButton active={rating >= 3} onClick={() => handleRatingSelection(3)}>
+              ★
+            </StarButton>
+            <StarButton active={rating >= 4} onClick={() => handleRatingSelection(4)}>
+              ★
+            </StarButton>
+            <StarButton active={rating >= 5} onClick={() => handleRatingSelection(5)}>
+              ★
+            </StarButton>
+          </div>
+          <CommentInput
+            type="text"
+            value={comment}
+            onChange={(event) => commentHandler(event)}
+            placeholder="내용을 입력하세요."
+          />
+          <button onClick={addCommentHandler}>등록</button>
+        </StDetailBox>
       </StDetailPage>
     </>
   );
@@ -147,7 +178,7 @@ const CommentInput = styled.input`
   border: 1px solid white;
   margin-left: 20px;
   margin-bottom: 20px;
-  width: 500px;
+  width: 300px;
   height: 30px;
   padding: 5px;
   color: black;
@@ -194,4 +225,13 @@ const StDetailBox = styled.div`
 const StReviewCountBox = styled.div`
   display: flex;
   flex-direction: row;
+`;
+
+const StarButton = styled.button`
+  font-size: 20px;
+  color: ${(props) => (props.active ? 'gold' : 'gray')};
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
 `;
