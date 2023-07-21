@@ -1,60 +1,20 @@
 {
-  "posts": [
-    {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
   "comments": [
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    },
-    {
-      "id": "4677e506-9666-2a07-17c6-e2be4f702d8f",
-      "comment": "123",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
-    },
-    {
-      "id": "8259d72d-9c30-9832-1657-7121e5c95a1a",
-      "comment": "12",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
-    },
-    {
-      "id": "aae80f58-2977-546a-748f-9280c5ca03dc",
+      "id": "3edbd0de-df39-f586-5deb-8b5ca4c2c356",
+      "shopId": "27091506",
       "nickName": "",
-      "comment": "123",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
+      "comment": "에이블헬스장",
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252"
     },
     {
-      "id": "e654cc84-c963-2a57-87de-c8333aee74af",
+      "shopId": "27091506",
       "nickName": "",
-      "comment": "55",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
+      "comment": "코멘트아이디 실험용",
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": "N14XCGz"
     },
-    {
-      "id": "6fa2373e-d592-17bc-42d5-051415ccfb27",
-      "nickName": "",
-      "comment": "3434",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
-    },
-    {
-      "id": "6339f095-8847-779d-d0a3-ed1d6c072406",
-      "comment": "123",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
-    },
-    {
-      "id": "e7041dc8-c874-392f-62db-76c3732b6e02",
-      "nickName": "",
-      "comment": "test1",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
-    }
   ],
-  "profile": {
-    "name": "typicode"
-  },
   "users": [
     {
       "id": "qsn5T77abRgBEYiDHYCClt2EB252",
