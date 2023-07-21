@@ -8,7 +8,6 @@ function Details() {
   const placeData = location.state?.test1;
   // console.log('placeData=>', placeData);
 
-
   return (
     <>
       <DetailInfo placeData={placeData} />
