@@ -13,9 +13,16 @@
       "postId": 1
     },
     {
-      "comment": "234",
-      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33",
-      "id": 2
+      "id": "6f9b6726-0ce6-7876-689e-c3afa009e2ed",
+      "nickName": "",
+      "comment": "1",
+      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
+    },
+    {
+      "id": "5fc82c3b-f8cf-5c31-e8b7-01873702c0f1",
+      "nickName": "",
+      "comment": "2",
+      "userId": "HXHOwzTytOYj7yIYGGzNI9MpuE33"
     }
   ],
   "profile": {
