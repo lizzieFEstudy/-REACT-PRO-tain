@@ -26,17 +26,6 @@ const DetailBox = ({ placeData }) => {
 
   const shopId = params.id;
 
-  //별점 구하는 곳
-  const reviews = data?.filter((item) => item.shopId === shopId)
-  const commentRatingArr = reviews?.map((item) => item.rating)
-  const commentRatingSum = commentRatingArr?.reduce((acc, cur) => {
-    return acc + cur
-  })
-  // 리뷰 개수
-  const commentRatingLength = commentRatingArr?.length
-  // 총 별점 평균
-  const RatingAvg = (commentRatingSum/commentRatingLength).toFixed(2)
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation(addComment, {
@@ -56,6 +45,30 @@ const DetailBox = ({ placeData }) => {
       queryClient.invalidateQueries('comments');
     }
   });
+
+  /////shop 등록용 mutation-동준-/////
+  const { isLoading: shopLoading, isError: shopError, data: shopData } = useQuery('shops', getShops);
+  const addShopMutation = useMutation(addShops, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('shops');
+      alert('신규 shop 등록 성공');
+    },
+    onError: () => {
+      alert('신규 shop 등록 에러');
+    }
+  });
+
+  const updateShopMutation = useMutation(updateShops, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('shops');
+      alert('shop 업데이트 성공');
+    },
+    onError: () => {
+      alert('shop 업데이트 에러');
+    }
+  });
+
+  /////shop 등록용 mutation-동준-////
 
   const addCommentHandler = async () => {
 
@@ -101,19 +114,43 @@ const DetailBox = ({ placeData }) => {
   const handleRatingSelection = (ratingValue) => {
     setRating(ratingValue);
   };
+
+  const addShopHandler = async () => {
+    if (!shopLoading) {
+      const shopExists = shopData?.some((item) => item.id === shopId);
+      if (!shopExists) {
+        const newShop = {
+          id: shopId,
+          rating: [Number(rating)]
+        };
+        addShopMutation.mutate(newShop);
+      } else {
+        const shopToUpdate = shopData.find((item) => item.id === shopId);
+        const updatedShop = {
+          ...shopToUpdate,
+          rating: [...shopToUpdate.rating, Number(rating)]
+        };
+        updateShopMutation.mutate({ shopId, updatedShop });
+      }
+    }
+  };
+  const handleReviewSubmit = async () => {
+      await addCommentHandler();
+      await addShopHandler();
+  };
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
         <StDetailBox size="placeTitle">
           <div>{placeData?.place_name}</div>
           <StReviewCountBox>
-            <div>별점: {RatingAvg}</div>
-            <div>방문자 리뷰: {commentRatingLength}</div>
+            <div>별점자리</div>
+            <div>방문자 리뷰</div>
           </StReviewCountBox>
         </StDetailBox>
         <StDetailBox size="placeDetail">
           <div>{placeData?.road_address_name}</div>
-          <div>{placeData?.phone ? placeData?.phone : "사장님 전화번호 넣어주세요!!" }</div>
+          <div>{placeData?.phone}</div>
         </StDetailBox>
         <StDetailBox size="placeReviews">
           <br />
@@ -171,7 +208,7 @@ const DetailBox = ({ placeData }) => {
             onChange={(event) => commentHandler(event)}
             placeholder="내용을 입력하세요."
           />
-          <button onClick={addCommentHandler}>등록</button>
+          <button onClick={() => handleReviewSubmit()}>등록</button>
         </StDetailBox>
       </StDetailPage>
     </>

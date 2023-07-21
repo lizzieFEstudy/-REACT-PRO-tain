@@ -1,53 +1,78 @@
 {
-  "shops": [],
+  "shops": [
+    {
+      "id": "254868182",
+      "rating": [
+        5
+      ]
+    },
+    {
+      "id": "20245327",
+      "rating": [
+        5,
+        1,
+        2,
+        1,
+        2
+      ]
+    }
+  ],
   "comments": [
     {
-      "shopId": "27091506",
+      "shopId": "254868182",
       "nickName": "",
-      "comment": "코멘트아이디생성용",
+      "comment": "리뷰테스트1",
       "rating": 5,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "코멘트아이디생성용"
+      "id": 1
     },
     {
-      "shopId": "679322947",
+      "shopId": "20245327",
       "nickName": "",
-      "comment": "ㅁㅁㅁㅁㅁ",
-      "rating": 4,
+      "comment": "리뷰테스트1",
+      "rating": 5,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "c3tqjf6"
+      "id": 2
     },
     {
-      "shopId": "679322947",
+      "shopId": "20245327",
       "nickName": "",
-      "comment": "ㄴㄴㄴㄴ",
+      "comment": "리뷰테스트2",
+      "rating": 1,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": 3
+    },
+    {
+      "shopId": "20245327",
+      "nickName": "",
+      "comment": "리뷰테스트3",
       "rating": 2,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "smY3xrZ"
+      "id": 4
     },
     {
-      "shopId": "25887294",
+      "shopId": "20245327",
       "nickName": "",
-      "comment": "2",
-      "rating": 4,
-      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
-      "id": "zHXZZdS"
-    },
-    {
-      "shopId": "27091506",
-      "nickName": "",
-      "comment": "aaaa",
-      "rating": 4,
+      "comment": "다시테스트1",
+      "rating": 1,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "SJeEXj_"
+      "id": 5
     },
     {
-      "shopId": "27091506",
+      "shopId": "20245327",
       "nickName": "",
-      "comment": "ssss",
-      "rating": 3,
+      "comment": "다시테스트2",
+      "rating": 2,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "1hN_HUy"
+      "id": 6
+    },
+    {
+      "shopId": "20245327",
+      "nickName": "",
+      "comment": "다시테스트3",
+      "rating": 5,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": 7
     }
   ],
   "users": [
