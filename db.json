@@ -73,6 +73,36 @@
       "rating": 5,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "id": 7
+    },
+    {
+      "shopId": "27091506",
+      "nickName": "",
+      "comment": "값이 친절하고 사장님이 싸요",
+      "rating": 4,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "헬스",
+      "price": "6개월 30만원",
+      "id": 8
+    },
+    {
+      "shopId": "981052798",
+      "nickName": "",
+      "comment": "값이 친절하고 사장님이 싸요.",
+      "rating": 4,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "필라테스이용권 3개월",
+      "price": "500000",
+      "id": 9
+    },
+    {
+      "shopId": "679322947",
+      "nickName": "",
+      "comment": "aa",
+      "rating": 4,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "헬스이용권 6개월",
+      "price": "4,546₩",
+      "id": 10
     }
   ],
   "users": [

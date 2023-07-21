@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom/dist';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom/dist';
 import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Main from '../pages/Main';
@@ -12,6 +12,7 @@ export const logInUser = auth;
 
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');

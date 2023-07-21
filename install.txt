@@ -6,4 +6,3 @@ yarn json-server --watch db.json --port 3333
 
 만약 댓글이 모두 삭제되는 오류가 있다면 아래 명령어로 실행.(출처 : https://github.com/typicode/json-server/issues/885 맨 하단)
 yarn json-server --foreignKeySuffix xxx --watch db.json --port 4000
-yarn json-server --foreignKeySuffix xxx --watch db.json --port 8080
