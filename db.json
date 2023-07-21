@@ -14,6 +14,22 @@
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "id": "N14XCGz"
     },
+    {
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "1",
+      "rating": 3,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "5MnwGNA"
+    },
+    {
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "2",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "zHXZZdS"
+    }
   ],
   "users": [
     {
@@ -33,6 +49,12 @@
       "name": "이동준3",
       "email": "operational4@naver.com",
       "pw": "password1!"
+    },
+    {
+      "id": "knVhnnVoarOno208AlpcB8NesDN2",
+      "name": "이은한",
+      "email": "reactprotein@gmail.com",
+      "pw": "as12df78**"
     }
   ]
 }

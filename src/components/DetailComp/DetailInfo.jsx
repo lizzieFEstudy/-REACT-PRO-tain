@@ -1,15 +1,17 @@
+//component 분리 예정
+
 import React from 'react';
 import { css, styled } from 'styled-components';
 
-const DetailInfo = ({ placeData }) => {
+const DetailInfo = ({ placeData, data }) => {
   return (
     <StDetailPage style={{ marginTop: '100px' }}>
       <StDetailBox size="placeTitle">
-      <div>{placeData?.place_name}</div>
-      <StReviewCountBox>
-      <div>별점자리</div>
-      <div>방문자 리뷰</div>
-      </StReviewCountBox>
+        <div>{placeData?.place_name}</div>
+        <StReviewCountBox>
+          <div>별점자리</div>
+          <div>방문자 리뷰</div>
+        </StReviewCountBox>
       </StDetailBox>
       <StDetailBox size="placeDetail">
         <div>{placeData?.road_address_name}</div>
@@ -17,9 +19,16 @@ const DetailInfo = ({ placeData }) => {
         <div>{placeData?.phone}</div>
       </StDetailBox>
       <StDetailBox size="placeReviews">
-        <div>으어어헝</div>
-        <div>여기에 리뷰를</div>
-        <div>뿌리면 됩니다.</div>
+        {data
+          ?.filter((comment) => comment.shopId == placeData?.shopId)
+          .map((comment) => {
+            return (
+              <div key={comment.id}>
+                <div>name| 별점 7.8| 22.04.05</div>
+                <div>{comment.comment}</div>
+              </div>
+            );
+          })}
       </StDetailBox>
     </StDetailPage>
   );
@@ -44,21 +53,21 @@ const StDetailBox = styled.div`
   align-items: center;
   ${({ size }) => {
     switch (size) {
-      case "placeTitle":
+      case 'placeTitle':
         return css`
           width: 50%;
           height: 20%;
-        `
-        case "placeDetail":
+        `;
+      case 'placeDetail':
         return css`
           width: 70%;
           height: 20%;
-        `
-      case "placeReviews":
+        `;
+      case 'placeReviews':
         return css`
           width: 70%;
           height: 80%;
-        `
+        `;
     }
   }}
   border: 1px solid black;
@@ -69,4 +78,4 @@ const StDetailBox = styled.div`
 const StReviewCountBox = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
