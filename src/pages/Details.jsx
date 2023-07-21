@@ -6,13 +6,13 @@ import DetailInfo from '../components/DetailComp/DetailInfo';
 function Details() {
   const location = useLocation();
   const placeData = location.state?.test1;
-  console.log('placeData=>', placeData);
+  // console.log('placeData=>', placeData);
 
 
   return (
     <>
       <DetailInfo placeData={placeData} />
-      <DetailBox />
+      <DetailBox placeData={placeData} />
     </>
   );
 }
