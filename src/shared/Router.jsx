@@ -6,6 +6,7 @@ import Main from '../pages/Main';
 import Details from '../pages/Details';
 import Layout from './Layout';
 import { auth } from '../firebase';
+import GlobalStyle from '../style/GlobalStyle';
 
 export const logInUser = auth;
 
@@ -24,15 +25,15 @@ const Router = () => {
 
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/:id" element={<Details />} />
-          <Route path="/detail" element={<Details />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Layout>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/:id" element={<Details />} />
+            <Route path="/detail" element={<Details />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Layout>
     </BrowserRouter>
   );
 };
