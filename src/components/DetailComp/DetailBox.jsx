@@ -66,7 +66,8 @@ const DetailBox = ({ placeData }) => {
       nickName,
       comment,
       rating,
-      userId: auth.currentUser.uid
+      userId: auth.currentUser.uid,
+      createdAt: new Date().toISOString()
     };
 
     mutation.mutate(newComment);
@@ -104,7 +105,12 @@ const DetailBox = ({ placeData }) => {
     return user?.name || 'Unknown User'; // Return 'Unknown User' if user is not found
   };
 
-  console.log('이름:', userData);
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('ko-KR', options);
+  };
+
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
@@ -124,13 +130,12 @@ const DetailBox = ({ placeData }) => {
           {data
             ?.filter((comment) => comment.shopId == shopId)
             .map((comment) => {
-              // const user = userData?.find((user) => user.id === comment.userId);
-              // console.log('Comment content:', comment.comment);
-
+              const formattedDate = formatDate(comment.createdAt);
               return (
                 <div key={comment.id}>
                   <div>
-                    <strong>{getUserName(comment.userId)}</strong>| 별점 {comment.rating.toFixed(1)}| {comment.date}
+                    <strong>{getUserName(comment.userId)}</strong>| 별점 {comment.rating.toFixed(1)}|{' '}
+                    {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
                   </div>
                   <button
                     onClick={() => {
