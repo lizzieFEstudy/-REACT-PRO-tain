@@ -5,8 +5,9 @@ import { getComments, addComment, deleteComment, updateComment } from '../../api
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
-
+import DetailUpdate from './DetailUpdate';
 import { VscTriangleDown } from 'react-icons/vsc';
+import { MdOutlineMapsHomeWork, MdOutlinePhonelinkRing } from 'react-icons/md';
 import { getUsers } from '../../api/users';
 import {
   CommentInput,
@@ -16,15 +17,19 @@ import {
   StarButton,
   StCommentBox,
   StCommentHeader,
-  StCommentContent,
+  StCommentBtnCtn,
   StCommentButtons,
-  StBtnWrap,
-  StCommentDetails,
   StDropdownCtn,
   StDropdown,
   StDropdownBtn,
   StDropdownContent,
   StDropdownItem,
+  StModalBox,
+  StModalCtn,
+  StCloseModalBtn,
+  StDetailTitle,
+  StReviewInfo,
+  StReviewInfo2
 } from './DetailStyles';
 
 const DetailBox = ({ placeData }) => {
@@ -35,34 +40,27 @@ const DetailBox = ({ placeData }) => {
   const [rating, setRating] = useState(0);
   const [displayedComments, setDisplayedComments] = useState([]);
 
-   // Define state variables for edit mode
-   const [editMode, setEditMode] = useState(false);
-   const [editCommentId, setEditCommentId] = useState(null);
-   const [editComment, setEditComment] = useState('');
-   const [editRating, setEditRating] = useState(0);
- 
-   // Function to toggle edit mode
-   const toggleEditMode = (commentId, comment, rating) => {
-     setEditMode(!editMode);
-     setEditCommentId(commentId);
-     setEditComment(comment);
-     setEditRating(rating);
-   };
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
-   const { data } = useQuery('comments', getComments, {
+  const { data } = useQuery('comments', getComments, {
     onSuccess: (data) => {
       console.log('Fetched data:', data);
       setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
     }
   });
 
-   const { data: userData } = useQuery('users', getUsers, {
+  const { data: userData } = useQuery('users', getUsers, {
     onSuccess: (userData) => {
       console.log('Fetched userData:', userData);
     }
   });
   const shopId = params.id;
- 
 
   // const { isLoading, isError, data } = useQuery('comments', getComments, {
   //   onSuccess: (data) => {
@@ -71,33 +69,69 @@ const DetailBox = ({ placeData }) => {
   // });
 
   //가격정보 select창 관련
-  const currentPlace = placeData.category_name.split('>').pop().trim()
-  console.log("currentPlace=>",currentPlace)
+  const currentPlace = placeData.category_name.split('>').pop().trim();
+  console.log('currentPlace=>', currentPlace);
   const [isActive, setIsActive] = useState(false);
   const [selected, setSelected] = useState('');
   const showDropdown = () => {
     setIsActive(!isActive);
   };
-  const [price, setPrice] = useState('')
+  const [price, setPrice] = useState('');
   const options = (() => {
-    if (currentPlace.includes("헬스")) {
-        return ['헬스이용권 1개월', '헬스이용권 3개월', '헬스이용권 6개월','헬스이용권 12개월', 'PT 10회', 'PT 20회','PT 30회']
-      } else if (currentPlace.includes("필라테스")) {
-        return ['필라테스 회원권 1개월', '필라테스 회원권 3개월', '필라테스 회원권 6개월', '필라테스 회원권 12개월', 'PT 10회', 'PT 20회','PT 30회', '그룹레슨'] 
-      } else if (currentPlace.includes("요가")) {
-        return ['요가 회원권 1개월', '요가 회원권 6개월', '요가 회원권 9개월', '요가 회원권 12개월', 'PT 10회', 'PT 20회','PT 30회', '그룹레슨'] 
-      } else if (currentPlace.includes("협회") || currentPlace.includes("댄스")) {
-        return ['댄스 회원권 1개월', '댄스 회원권 6개월', '댄스 회원권 9개월', '댄스 회원권 12개월', 'PT 10회', 'PT 20회','PT 30회', '그룹레슨'] 
-      } else {
-        return ["죄송합니다. 아직 해당 기관 정보를 받지 못했습니다."]
-      }})()
-  
+    if (currentPlace.includes('헬스')) {
+      return [
+        '헬스이용권 1개월',
+        '헬스이용권 3개월',
+        '헬스이용권 6개월',
+        '헬스이용권 12개월',
+        'PT 10회',
+        'PT 20회',
+        'PT 30회'
+      ];
+    } else if (currentPlace.includes('필라테스')) {
+      return [
+        '필라테스 회원권 1개월',
+        '필라테스 회원권 3개월',
+        '필라테스 회원권 6개월',
+        '필라테스 회원권 12개월',
+        'PT 10회',
+        'PT 20회',
+        'PT 30회',
+        '그룹레슨'
+      ];
+    } else if (currentPlace.includes('요가')) {
+      return [
+        '요가 회원권 1개월',
+        '요가 회원권 6개월',
+        '요가 회원권 9개월',
+        '요가 회원권 12개월',
+        'PT 10회',
+        'PT 20회',
+        'PT 30회',
+        '그룹레슨'
+      ];
+    } else if (currentPlace.includes('협회') || currentPlace.includes('댄스')) {
+      return [
+        '댄스 회원권 1개월',
+        '댄스 회원권 6개월',
+        '댄스 회원권 9개월',
+        '댄스 회원권 12개월',
+        'PT 10회',
+        'PT 20회',
+        'PT 30회',
+        '그룹레슨'
+      ];
+    } else {
+      return ['죄송합니다. 아직 해당 기관 정보를 받지 못했습니다.'];
+    }
+  })();
+
   const addComma = (value) => {
     // 입력된 값에서 숫자 이외의 문자를 모두 제거
     const numericValue = value.replace(/[^\d]/g, '');
     // 콤마 추가한 문자열 생성
     const formattedValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return formattedValue ? formattedValue + '₩' : ''
+    return formattedValue;
   };
   const handleChange = (event) => {
     // 1000단위마다 콤마를 추가하여 설정
@@ -113,7 +147,7 @@ const DetailBox = ({ placeData }) => {
   const commentRatingLength = commentRatingArr?.length;
   // 총 별점 평균
   const RatingAvg = (commentRatingSum / commentRatingLength).toFixed(2);
-  console.log(RatingAvg)
+  console.log(RatingAvg);
 
   const queryClient = useQueryClient();
 
@@ -124,12 +158,6 @@ const DetailBox = ({ placeData }) => {
   });
 
   const deleteMutation = useMutation(deleteComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('comments');
-    }
-  });
-
-  const updateMutation = useMutation(updateComment, {
     onSuccess: () => {
       queryClient.invalidateQueries('comments');
     }
@@ -164,13 +192,6 @@ const DetailBox = ({ placeData }) => {
     }
   };
 
-  const updateCommentHandler = (id) => {
-    const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
-    if (confirmed) {
-      updateMutation.mutate(id);
-    }
-  };
-
   const commentHandler = (event) => {
     setComment(event.target.value);
   };
@@ -193,40 +214,43 @@ const DetailBox = ({ placeData }) => {
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
         <StDetailBox size="placeTitle">
-          <div>{placeData?.place_name}</div>
+          <StDetailTitle>{placeData?.place_name}</StDetailTitle>
           <StReviewCountBox>
-            <div>별점: {isNaN(RatingAvg) ? 0 : RatingAvg }</div>
-            <div>방문자 리뷰: {commentRatingLength}</div>
+            <StReviewInfo>⭐ {isNaN(RatingAvg) ? '0.00' : RatingAvg}</StReviewInfo>
+            <StReviewInfo>방문자 리뷰: {commentRatingLength}</StReviewInfo>
           </StReviewCountBox>
         </StDetailBox>
         <StDetailBox size="placeDetail">
-          <div>{placeData?.road_address_name}</div>
-          <div>{placeData?.phone ? placeData?.phone : '사장님 전화번호 넣어주세요!!'}</div>
+          <StReviewInfo>
+            <MdOutlineMapsHomeWork /> {placeData?.road_address_name}
+          </StReviewInfo>
+          <StReviewInfo>
+            <MdOutlinePhonelinkRing />
+            {placeData?.phone ? placeData?.phone : '사장님 전화번호 넣어주세요!!'}
+          </StReviewInfo>
         </StDetailBox>
-        <StDetailBox size="placeReviews">
+        <StDetailBox display="block" size="placeReviews">
           <br />
           {data
             ?.filter((comment) => comment.shopId === shopId)
             .map((comment) => {
               const formattedDate = formatDate(comment.createdAt);
-              const isEditing = editMode && editCommentId === comment.id;
               return (
                 <StCommentBox key={comment.id}>
                   <StCommentHeader>
-                    <StCommentDetails>
-                      {/* Comment details (username, rating, date) */}
-                      <strong>{getUserName(comment.userId)}</strong> | 별점 {comment.rating.toFixed(1)} |{' '}
-                      {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
-                    </StCommentDetails>
-                    <StBtnWrap>
-                      {isEditing ? ( // Show "완료" (Done) button in edit mode
-                        <StCommentButtons onClick={() => updateCommentHandler(comment.id)}>완료</StCommentButtons>
-                      ) : (
-                        // Show "수정" (Edit) button in non-edit mode
-                        <StCommentButtons onClick={() => toggleEditMode(comment.id, comment.comment, comment.rating)}>
-                          수정
-                        </StCommentButtons>
-                      )}
+                    <StReviewInfo2>
+                      {getUserName(comment.userId)}&nbsp;&nbsp;&nbsp; 리뷰별점 : {comment.rating.toFixed(1)}
+                    </StReviewInfo2>
+                    <StReviewInfo2>
+                      작성일 : {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
+                    </StReviewInfo2>
+                  </StCommentHeader>
+                  <StReviewInfo2>회원권 : {comment.selected}</StReviewInfo2>
+                  <StReviewInfo2>가격 : {comment.price}₩</StReviewInfo2>
+                  <StReviewInfo2>리뷰 내용 : {comment.comment}</StReviewInfo2>
+                  {comment.userId === auth.currentUser.uid ? (
+                    <StCommentBtnCtn>
+                      <StCommentButtons onClick={openModal}>수정</StCommentButtons>
                       <StCommentButtons
                         onClick={() => {
                           deleteCommentHandler(comment.id);
@@ -234,9 +258,19 @@ const DetailBox = ({ placeData }) => {
                       >
                         삭제
                       </StCommentButtons>
-                    </StBtnWrap>
-                  </StCommentHeader>
-                  <StCommentContent>{isEditing ? null : comment.comment}</StCommentContent>
+                    </StCommentBtnCtn>
+                  ) : (
+                    <></>
+                  )}
+
+                  {isOpen && (
+                    <StModalBox onClick={closeModal}>
+                      <StModalCtn onClick={(event) => event.stopPropagation()}>
+                        <StCloseModalBtn onClick={closeModal}>X</StCloseModalBtn>
+                        <DetailUpdate item={comment ? comment : null} placeData={placeData} closeModal={closeModal} />
+                      </StModalCtn>
+                    </StModalBox>
+                  )}
                 </StCommentBox>
               );
             })}
@@ -261,7 +295,7 @@ const DetailBox = ({ placeData }) => {
               ★
             </StarButton>
           </div>
-            <StDropdownCtn>
+          <StDropdownCtn>
             <StDropdown>
               <StDropdownBtn onClick={showDropdown}>
                 {selected || '가격정보를 입력해주세요!!'}
@@ -282,9 +316,8 @@ const DetailBox = ({ placeData }) => {
                 )}
               </StDropdownBtn>
             </StDropdown>
-            <input type="text" value={price} onChange={handleChange} placeholder='ex) 3,00,000 ₩'/>
-            </StDropdownCtn>
-
+            <input type="text" value={price} onChange={(event) => handleChange(event)} placeholder="ex) 3,00,000 ₩" />
+          </StDropdownCtn>
 
           <CommentInput
             type="text"
@@ -300,4 +333,3 @@ const DetailBox = ({ placeData }) => {
 };
 
 export default DetailBox;
-

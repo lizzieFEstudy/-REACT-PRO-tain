@@ -1,57 +1,44 @@
 {
   "comments": [
     {
-      "shopId": "254868182",
-      "nickName": "",
-      "comment": "리뷰테스트1",
-      "rating": 5,
+      "shopId": "679322947",
+      "comment": "ㅁㅁㅁ",
+      "rating": 4,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 1
-    },
-    {
-      "shopId": "254868182",
-      "nickName": "",
-      "comment": "사장님이 싸고 맛있어요!",
-      "rating": 5,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "selected": "헬스이용권 1개월",
-      "price": "10,000,000₩",
-      "id": 2
+      "selected": "헬스이용권 6개월",
+      "price": "55,555",
+      "createdAt": "2023-07-22T07:42:02.422Z",
+      "id": 9
     },
     {
       "shopId": "27091506",
-      "comment": "사장님이 헬창이에요",
-      "rating": 4,
+      "comment": "으어어",
+      "rating": 5,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "헬스이용권 1개월",
+      "price": "22,222,222",
+      "createdAt": "2023-07-22T08:41:50.258Z",
+      "id": 10
+    },
+    {
+      "shopId": "254868182",
+      "comment": "여기까지가 저의 한계입니다.",
+      "rating": 5,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "selected": "헬스이용권 3개월",
-      "price": "2,000,000₩",
-      "id": 3
-    },
-    {
-      "shopId": "25887294",
-      "nickName": "",
-      "comment": "2",
-      "rating": 4,
-      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
-      "id": "zHXZZdS"
-    },
-    {
-      "shopId": "27111982",
-      "nickName": "",
-      "comment": "테스트",
-      "rating": 3,
-      "userId": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
-      "id": "dcqAZ-8"
+      "price": "100,000,000",
+      "createdAt": "2023-07-22T08:44:33.596Z",
+      "id": 11
     },
     {
       "shopId": "27091506",
       "comment": "aaa",
       "rating": 3,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "selected": "헬스이용권 6개월",
-      "price": "444₩",
-      "createdAt": "2023-07-22T03:48:49.672Z",
-      "id": 4
+      "selected": "헬스이용권 1개월",
+      "price": "50,000,000",
+      "createdAt": "2023-07-22T08:45:02.159Z",
+      "id": 12
     }
   ],
   "users": [
