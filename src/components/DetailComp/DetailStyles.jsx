@@ -2,7 +2,7 @@ import { css, styled } from "styled-components";
 
 export const CommentInput = styled.input`
   background: transparent;
-  border: 1px solid white;
+  border: 1px solid black;
   margin-left: 20px;
   margin-bottom: 20px;
   width: 300px;
@@ -104,6 +104,7 @@ export const StCommentDetails = styled.div`
 export const StDropdownCtn = styled.div`
  display: flex;
  flex-direction: row;
+ align-items: center;
 `;
 
 export const StDropdown = styled.div`
@@ -143,3 +144,63 @@ export const StDropdownItem = styled.div`
     background-color: #f4f4f4;
   }
 `;
+
+export const StModalBox = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: beige;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  animation: colorChange 0.4 linear;
+  @keyframes colorChange {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+export const StModalCtn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  background-color: white;
+  padding: 20px;
+  width: 40%;
+  height: 30%;
+  border-radius: 12px;
+  z-index: 2;
+  animation: dropTop 0.4s linear;
+  @keyframes dropTop {
+    0% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+`
+export const StCloseModalBtn = styled.button`
+  background-color: White;
+  border: 1px solid black;
+  border-radius: 50%;
+  transform: scale(1.2);
+  margin-left: 700px;
+`
+
+export const StUpdateModalCtn = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`
