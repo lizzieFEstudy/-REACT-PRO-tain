@@ -19,7 +19,12 @@ import {
   StCommentContent,
   StCommentButtons,
   StBtnWrap,
-  StCommentDetails
+  StCommentDetails,
+  StDropdownCtn,
+  StDropdown,
+  StDropdownBtn,
+  StDropdownContent,
+  StDropdownItem,
 } from './DetailStyles';
 
 const DetailBox = ({ placeData }) => {
@@ -266,108 +271,3 @@ const DetailBox = ({ placeData }) => {
 
 export default DetailBox;
 
-const CommentInput = styled.input`
-  background: transparent;
-  border: 1px solid white;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  width: 300px;
-  height: 30px;
-  padding: 5px;
-  color: black;
-`;
-
-const StDetailPage = styled.div`
-  margin: 100px auto 0px;
-  border: 1px solid red;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const StDetailBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  ${({ size }) => {
-    switch (size) {
-      case 'placeTitle':
-        return css`
-          width: 50%;
-          height: 20%;
-        `;
-      case 'placeDetail':
-        return css`
-          width: 70%;
-          height: 20%;
-        `;
-      case 'placeReviews':
-        return css`
-          width: 70%;
-          height: 80%;
-        `;
-    }
-  }}
-  border: 1px solid black;
-
-  /* align-items: center; */
-`;
-const StReviewCountBox = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const StarButton = styled.button`
-  font-size: 20px;
-  color: ${(props) => (props.active ? 'gold' : 'gray')};
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-`;
-
-const StDropdownCtn = styled.div`
- display: flex;
- flex-direction: row;
-`;
-
-const StDropdown = styled.div`
-  user-select: none;
-  width: 300px;
-  margin: 20px;
-  position: relative;
-`;
-
-const StDropdownBtn = styled.div`
-  cursor: pointer;
-  padding: 15px 20px;
-  background-color: white;
-  border: 1px solid gray;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StDropdownContent = styled.div`
-  position: absolute;
-  top: 110%;
-  left: 0;
-  padding: 10px;
-  background-color: white;
-  border: 1px solid gray;
-  border-radius: 20px;
-  width: 95%;
-`;
-
-const StDropdownItem = styled.div`
-  cursor: pointer;
-  padding: 10px;
-  transition: all 0.2s;
-  &:hover {
-    background-color: #f4f4f4;
-  }
-`;
