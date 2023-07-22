@@ -29,6 +29,14 @@
       "rating": 4,
       "userId": "knVhnnVoarOno208AlpcB8NesDN2",
       "id": "zHXZZdS"
+    },
+    {
+      "shopId": "27111982",
+      "nickName": "",
+      "comment": "테스트",
+      "rating": 3,
+      "userId": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
+      "id": "dcqAZ-8"
     }
   ],
   "users": [
@@ -55,6 +63,8 @@
       "name": "황대성",
       "email": "klp2797@naver.com",
       "pw": "hdssdh5025!!"
+    },
+    {
       "id": "knVhnnVoarOno208AlpcB8NesDN2",
       "name": "이은한",
       "email": "reactprotein@gmail.com",
