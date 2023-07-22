@@ -26,7 +26,7 @@ const Header = () => {
     sessionStorage.removeItem('token');
     setIsLoggedIn(false);
     navigate("/")
-    // window.location.reload()
+    window.location.reload()
   };
 
   return (

@@ -1,18 +1,25 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import styled, { css } from 'styled-components';
 =======
 import { UseSelector } from 'react-redux';
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+import styled, { css } from 'styled-components';
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import { VscTriangleDown } from 'react-icons/vsc';
 =======
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
 import { getUsers } from '../../api/users';
 import {
   CommentInput,
@@ -27,7 +34,10 @@ import {
   StBtnWrap,
   StCommentDetails
 } from './DetailStyles';
+<<<<<<< HEAD
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
 
 const DetailBox = ({ placeData }) => {
   const navigate = useNavigate();
@@ -60,6 +70,9 @@ const DetailBox = ({ placeData }) => {
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
   //가격정보 select창 관련
   const currentPlace = placeData.category_name.split('>').pop().trim()
   console.log("currentPlace=>",currentPlace)
@@ -94,15 +107,20 @@ const DetailBox = ({ placeData }) => {
     setPrice(addComma(event.target.value));
   };
 
-
   //가격정보 select창 관련
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
   const { data: userData } = useQuery('users', getUsers, {
     onSuccess: (userData) => {
       console.log('Fetched userData:', userData);
     }
   });
+<<<<<<< HEAD
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
 
   const shopId = params.id;
 
@@ -148,11 +166,17 @@ const DetailBox = ({ placeData }) => {
       rating,
       userId: auth.currentUser.uid,
 <<<<<<< HEAD
+<<<<<<< HEAD
       selected,
       price,
 =======
       createdAt: new Date().toISOString()
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+      selected,
+      price,
+      createdAt: new Date().toISOString()
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
     };
 
     mutation.mutate(newComment);
@@ -203,20 +227,27 @@ const DetailBox = ({ placeData }) => {
     setRating(ratingValue);
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
+=======
+  
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
   const getUserName = (userId) => {
     const user = userData?.find((user) => user.id === userId);
     return user?.name || 'Unknown User'; // Return 'Unknown User' if user is not found
   };
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     const date = new Date(dateString);
-    return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('ko-KR', options);
+    return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('ko-KR', dateOptions);
   };
 
+<<<<<<< HEAD
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
@@ -240,6 +271,9 @@ const DetailBox = ({ placeData }) => {
               const isEditing = editMode && editCommentId === comment.id;
               return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
                 <div key={comment.id}>
                   {/* <div>{users.name}</div> */}
                   <strong>
@@ -267,7 +301,10 @@ const DetailBox = ({ placeData }) => {
                   </button>
                   <div>{comment.comment}</div>
                 </div>
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
                 <StCommentBox key={comment.id}>
                   <StCommentHeader>
                     <StCommentDetails>
@@ -295,7 +332,10 @@ const DetailBox = ({ placeData }) => {
                   </StCommentHeader>
                   <StCommentContent>{isEditing ? null : comment.comment}</StCommentContent>
                 </StCommentBox>
+<<<<<<< HEAD
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
               );
             })}
         </StDetailBox>
@@ -360,6 +400,10 @@ const DetailBox = ({ placeData }) => {
 
 export default DetailBox;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
 
 const CommentInput = styled.input`
   background: transparent;
@@ -466,5 +510,9 @@ const StDropdownItem = styled.div`
     background-color: #f4f4f4;
   }
 `;
+<<<<<<< HEAD
 =======
 >>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
+=======
+
+>>>>>>> 7bdf05fbc12915a125d8fd8ef30a23c37ce546b0
