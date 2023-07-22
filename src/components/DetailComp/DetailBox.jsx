@@ -213,11 +213,8 @@ const DetailBox = ({ placeData }) => {
               <StDropdownBtn onClick={showDropdown}>
                 {selected || '가격정보를 입력해주세요!!'}
                 <VscTriangleDown />
-                {/* 드랍다운 그리는 메인로직 */}
                 {isActive && (
                   <StDropdownContent>
-                    {/* map함수로 options의 요소 options을 하나하나 돌려서 리턴한다(노란색 (로 시작). 
-            DropdownItem을 클릭하면 그 선택한 요소 option을 state에 넣고(setSelcted), 드랍다운 창을 닫는다(setIsActive(false)) */}
                     {options.map((option) => (
                       <StDropdownItem
                         onClick={(event) => {
@@ -250,16 +247,6 @@ const DetailBox = ({ placeData }) => {
 };
 
 export default DetailBox;
-
-const SInfoBox = styled.div`
-  flex: 1;
-  margin: 500px;
-`;
-
-const SReviewBox = styled.div`
-  flex: 1;
-  margin: 30px;
-`;
 
 const CommentInput = styled.input`
   background: transparent;
