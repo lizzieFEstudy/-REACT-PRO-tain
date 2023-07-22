@@ -26,7 +26,7 @@ const Header = () => {
     sessionStorage.removeItem('token');
     setIsLoggedIn(false);
     navigate("/")
-    // window.location.reload()
+    window.location.reload()
   };
 
   return (
@@ -58,7 +58,7 @@ export default Header;
 
 const S = {
   Header: styled.header`
-    background-color:#f25320;
+    background-color: #f25320;
     width: 100;
     height: 80px;
     display: flex;

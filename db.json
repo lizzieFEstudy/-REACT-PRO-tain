@@ -1,79 +1,5 @@
 {
-  "shops": [
-    {
-      "id": "254868182",
-      "rating": [
-        5
-      ]
-    },
-    {
-      "id": "20245327",
-      "rating": [
-        5,
-        1,
-        2,
-        1,
-        2
-      ]
-    }
-  ],
   "comments": [
-    {
-      "shopId": "254868182",
-      "nickName": "",
-      "comment": "리뷰테스트1",
-      "rating": 5,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 1
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "리뷰테스트1",
-      "rating": 5,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 2
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "리뷰테스트2",
-      "rating": 1,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 3
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "리뷰테스트3",
-      "rating": 2,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 4
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "다시테스트1",
-      "rating": 1,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 5
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "다시테스트2",
-      "rating": 2,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 6
-    },
-    {
-      "shopId": "20245327",
-      "nickName": "",
-      "comment": "다시테스트3",
-      "rating": 5,
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": 7
-    },
     {
       "shopId": "27091506",
       "nickName": "",
@@ -87,22 +13,86 @@
     {
       "shopId": "981052798",
       "nickName": "",
+
       "comment": "값이 친절하고 사장님이 싸요.",
       "rating": 4,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "selected": "필라테스이용권 3개월",
       "price": "500000",
       "id": 9
+
+      "comment": "username",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "dW9s7v4"
+    },
+    {
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "name",
+      "rating": 3,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "BhRh8cO"
+    },
+    {
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "5점줄께 이름줘",
+      "rating": 5,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "jMe5hcJ"
+
     },
     {
       "shopId": "679322947",
       "nickName": "",
+
       "comment": "aa",
       "rating": 4,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
       "selected": "헬스이용권 6개월",
       "price": "4,546₩",
       "id": 10
+
+      "comment": "리뷰",
+      "rating": 3,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "niixBm9"
+    },
+    {
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "여전히 잘 되지?",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "hFOgb0C"
+    },
+    {
+      "shopId": "2143489349",
+      "nickName": "",
+      "comment": "오오 시간 잘 나오쥬??",
+      "rating": 5,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "createdAt": "2023-07-21T22:19:16.111Z",
+      "id": "yTtSgUS"
+    },
+    {
+      "shopId": "2143489349",
+      "nickName": "",
+      "comment": "여기 헬스장 Not bad",
+      "rating": 5,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "createdAt": "2023-07-21T22:32:32.862Z",
+      "id": "z2_75pZ"
+    },
+    {
+      "shopId": "2143489349",
+      "comment": "긴글긴글import styled, { css } from 'styled-components';  export const CommentInput = styled.input`   background: transparent;   border: 1px solid white;   margin-left: 20px;   margin-bottom: 20px;   width: 300px;   height: 30px;   padding: 5px;   color: black; `;  export const StDetailPage = styled.div`   margin: 100px auto 0px;   border: 1px solid red;   width: 100%;   height: 100vh;   display: flex;   flex-direction: column;   align-items: center; `;  export const StDetailBox = styled.div`   display: flex;   flex-direction: column;   justify-content: center;   align-items: center;   ${({ size }) => {     switch (size) {       case 'placeTitle':         return css`           width: 70%;           height: 20%;         `;       case 'placeDetail':         return css`           width: 70%;           height: 20%;         `;       case 'placeReviews':         return css`           width: 70%;           height: 80%;         `;     }   }}   border: 1px solid black; `;  export const StReviewCountBox = styled.div`   display: flex;   flex-direction: row; `;  export const StarButton = styled.button`   font-size: 20px;   color: ${(props) => (props.active ? 'gold' : 'gray')};   background: transparent;   border: none;   cursor: pointer;   outline: none; `;  export const StCommentBox = styled.div`   display: flex;   flex-direction: column;   justify-content: space-between;   border: 1px solid #ccc;   padding: 10px;   margin: 10px 0;   position: relative; `;  export const StCommentHeader = styled.div`   display: flex;   justify-content: space-between;   align-items: center;   margin-bottom: 5px; `;  export const StCommentContent = styled.div`   margin-bottom: 10px; `;  export const StCommentButtons = styled.div`   display: flex;   gap: 5px; `;  export const StBtnWrap = styled.div`   position: absolute;   top: 5px;   right: 5px;   display: flex;   gap: 5px; `;",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "createdAt": "2023-07-22T02:54:50.453Z",
+      "id": "K-9fCjI"
+
     }
   ],
   "users": [
@@ -123,6 +113,12 @@
       "name": "이동준3",
       "email": "operational4@naver.com",
       "pw": "password1!"
+    },
+    {
+      "id": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
+      "name": "황대성",
+      "email": "klp2797@naver.com",
+      "pw": "hdssdh5025!!"
     },
     {
       "id": "knVhnnVoarOno208AlpcB8NesDN2",

@@ -153,9 +153,9 @@ const KakaoMap = () => {
         // 마커와 검색결과 항목에 mouseover 했을때
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
-        ((marker, title, address, phone, categoryName, placeId, place) => {
+        ((marker, title, address, phone, categoryName, road_address_name,place_url, placeId, place) => {
           kakao.maps.event.addListener(marker, 'click', function () {
-            displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
+            displayInfowindow(marker, title, address, phone, categoryName, road_address_name,place_url, placeId, place);
           });
         })(
           marker,
@@ -163,6 +163,8 @@ const KakaoMap = () => {
           places[i].address_name,
           places[i].phone,
           places[i].category_name,
+          places[i].road_address_name,
+          places[i].place_url,
           places[i].id,
           places[i]
         );
@@ -210,32 +212,53 @@ const KakaoMap = () => {
 
     // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
     // 인포윈도우에 장소명을 표시합니다
-    function displayInfowindow(marker, title, address, phone, categoryName, placeId, place) {
+    function displayInfowindow(marker, title, address, phone, categoryName, road_address_name, placeId, place) {
       if (currentInfowindow) {
         currentInfowindow.close();
       }
       kakao.maps.event.addListener(marker, 'click', function () {
-        displayInfowindow(marker, title, address, phone, categoryName, placeId, place);
+        displayInfowindow(marker, title, address, phone, categoryName, road_address_name, placeId, place);
       });
 
-      const contentInner = `<div style="padding : 0px 0px 20px 0px; width: 272px;" class="testClass">
-        <div style="background : orange; padding : 10px 0px">
-          <h1>${title}</h1>
-          <p style="font-size:12px; letter-spacing:-2px">${categoryName}</p>
+      const contentInner = `<div class="infoWindow-wrap">
+        <div class="infoWindow-inner">
+        <p class="infoWindow-category">${categoryName}</p>
+          <h1 class="infoWindow-title">${title}</h1>
+          <p class="infoWindow-address">${road_address_name}</p>
+          <p class="infoWindow-address">(지번)${address}</p>
+          <p class="infoWindow-phone">${phone}</p>
+          
           </div>
-          <p>${address}</p>
-          <p>${phone}</p>
+          <button class="infoWindow-closeBtn">x</button>
           </div>`;
 
       let content = document.createElement('div');
       content.innerHTML = contentInner;
 
-      let closeBtn = document.createElement('button');
-      closeBtn.innerHTML = '상세보기';
-      closeBtn.onclick = function () {
+      let detailBtn = document.createElement('button');
+      detailBtn.innerHTML = '상세보기';
+      detailBtn.onclick = function () {
         navigate(`/${placeId}`, { state: { test1: place } });
       };
-      content.appendChild(closeBtn);
+
+      detailBtn.style.marginTop = '15px'
+      detailBtn.style.width= '100%'
+      detailBtn.style.backgroundColor = '#f25320';
+      detailBtn.style.color = 'white';
+      detailBtn.style.padding = '10px';
+      detailBtn.style.border = 'none';
+      detailBtn.style.cursor = 'pointer';
+      content.appendChild(detailBtn);
+
+      const closeBtn = content.querySelector('.infoWindow-closeBtn')
+      console.log(closeBtn)
+
+      closeBtn.addEventListener('click',closeInfoWindow)
+
+      function closeInfoWindow(){
+        infowindow.close();
+        currentInfowindow = null;
+      }
 
       infowindow.setContent(content);
       infowindow.open(map, marker);
