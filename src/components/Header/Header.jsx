@@ -30,48 +30,49 @@ const Header = () => {
   };
 
   return (
-    <S.Header>
-      <S.MenuCtn gap="0px">
-        <S.MenuSpan onClick={() => navigate('/')}>로고(메인으로감)</S.MenuSpan>
-      </S.MenuCtn>
-      <S.MenuCtn gap="0px">
+    <StHeader>
+      <StMenuCtn gap="0px">
+        <StMenuSpan borderright="3px solid white" onClick={() => navigate('/')}>💪REACT PROtein</StMenuSpan>
+      </StMenuCtn>
+      <StMenuCtn gap="0px">
         {isLoggedIn === true ? (
-          <S.MenuSpan onClick={(event) => logOutFunc(event)}>로그아웃</S.MenuSpan>
+          <StMenuSpan onClick={(event) => logOutFunc(event)}>로그아웃</StMenuSpan>
         ) : (
-          <S.MenuSpan onClick={() => navigate('/login')}>로그인</S.MenuSpan>
+          <StMenuSpan onClick={() => navigate('/login')}>로그인</StMenuSpan>
         )}
         {isLoggedIn === true ? (
-          <S.MenuSpan borderright="3px solid white" onClick={() => navigate('/mypage')}>
+          <StMenuSpan borderright="3px solid white" onClick={() => navigate('/mypage')}>
             프로필위치
-          </S.MenuSpan>
+          </StMenuSpan>
         ) : (
-          <S.MenuSpan borderright="3px solid white" onClick={() => navigate('/register')}>
+          <StMenuSpan borderright="3px solid white" onClick={() => navigate('/register')}>
             회원가입
-          </S.MenuSpan>
+          </StMenuSpan>
         )}
-      </S.MenuCtn>
-    </S.Header>
+      </StMenuCtn>
+    </StHeader>
   );
 };
 
 export default Header;
 
-const S = {
-  Header: styled.header`
+const StHeader = styled.header`
     background-color: #f25320;
     width: 100;
     height: 80px;
     display: flex;
     justify-content: space-between;
-  `,
-  MenuCtn: styled.div`
+    color: white;
+    font-weight: bold;
+  `;
+const StMenuCtn = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     gap: ${(props) => props.gap};
     margin: 0px 30px;
-  `,
-  MenuSpan: styled.span`
+  `;
+const StMenuSpan = styled.span`
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -79,5 +80,5 @@ const S = {
     border-left: 3px solid white;
     border-right: ${(props) => (props.borderright ? props.borderright : 'none')};
     height: 100%;
+    
   `
-};

@@ -57,7 +57,7 @@ const LoginComp = () => {
   return (
     <StLoginCtn>
       <StLoginForm onSubmit={HandleLoginSubmit}>
-        <StLoginLogo>💪🏽REACT PROtein</StLoginLogo>
+        <StLoginLogo>💪REACT PROtein</StLoginLogo>
         <div>
           <label>이메일</label>
           <br />

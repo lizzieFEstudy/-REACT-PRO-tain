@@ -11,7 +11,10 @@ import {
   StDropdownBtn,
   StDropdownContent,
   StDropdownItem,
-  StUpdateModalCtn
+  StUpdateModalCtn,
+  StReviewInfo,
+  StCommentButtons,
+  StPriceInput
 } from './DetailStyles';
 
 const DetailUpdate = ({ item, placeData }) => {
@@ -124,7 +127,7 @@ const DetailUpdate = ({ item, placeData }) => {
 
   return (
     <StUpdateModalCtn>
-      <h1>리뷰를 수정해주세요!!</h1>
+      <StReviewInfo>리뷰를 수정해주세요!!</StReviewInfo>
       <br />
       <div>
         <StarButton active={rating >= 1} onClick={() => handleRatingSelection(1)}>
@@ -149,6 +152,7 @@ const DetailUpdate = ({ item, placeData }) => {
             {selected || '가격정보를 입력해주세요!!'}
             <VscTriangleDown />
             {isActive && (
+              
               <StDropdownContent>
                 {options.map((option) => (
                   <StDropdownItem
@@ -164,7 +168,7 @@ const DetailUpdate = ({ item, placeData }) => {
             )}
           </StDropdownBtn>
         </StDropdown>
-        <input type="text" value={price} onChange={(event) => handleChange(event)} placeholder="ex) 3,00,000 ₩" />
+        <StPriceInput type="text" value={price} onChange={(event) => handleChange(event)} placeholder="ex) 3,00,000 ₩" />
       </StDropdownCtn>
 
       <CommentInput
@@ -173,7 +177,7 @@ const DetailUpdate = ({ item, placeData }) => {
         onChange={(event) => commentHandler(event)}
         placeholder="리뷰를 입력해 주세요!!!"
       />
-      <button onClick={updateCommentHandler}>수정하기</button>
+      <StCommentButtons onClick={updateCommentHandler}>수정하기</StCommentButtons>
     </StUpdateModalCtn>
   );
 };

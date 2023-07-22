@@ -7,6 +7,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
 import DetailUpdate from './DetailUpdate';
 import { VscTriangleDown } from 'react-icons/vsc';
+import { MdOutlineMapsHomeWork, MdOutlinePhonelinkRing } from 'react-icons/md';
 import { getUsers } from '../../api/users';
 import {
   CommentInput,
@@ -16,10 +17,8 @@ import {
   StarButton,
   StCommentBox,
   StCommentHeader,
-  StCommentContent,
+  StCommentBtnCtn,
   StCommentButtons,
-  StBtnWrap,
-  StCommentDetails,
   StDropdownCtn,
   StDropdown,
   StDropdownBtn,
@@ -27,7 +26,10 @@ import {
   StDropdownItem,
   StModalBox,
   StModalCtn,
-  StCloseModalBtn
+  StCloseModalBtn,
+  StDetailTitle,
+  StReviewInfo,
+  StReviewInfo2
 } from './DetailStyles';
 
 const DetailBox = ({ placeData }) => {
@@ -129,7 +131,7 @@ const DetailBox = ({ placeData }) => {
     const numericValue = value.replace(/[^\d]/g, '');
     // 콤마 추가한 문자열 생성
     const formattedValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return formattedValue ? formattedValue + '₩' : '';
+    return formattedValue;
   };
   const handleChange = (event) => {
     // 1000단위마다 콤마를 추가하여 설정
@@ -190,25 +192,6 @@ const DetailBox = ({ placeData }) => {
     }
   };
 
-  const updateCommentHandler = async (id) => {
-    if (!comment || rating === 0 || !selected || !price) {
-      alert('모든 항목을 입력하세요');
-      return;
-    } else {
-      const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
-      if (confirmed) {
-        updateMutation.mutate(id);
-      }
-    }
-    const updatedComment = {
-      comment,
-      rating,
-      selected,
-      price
-    };
-    updateMutation.mutate({ id: comment.id, updatedComment });
-  };
-
   const commentHandler = (event) => {
     setComment(event.target.value);
   };
@@ -229,20 +212,24 @@ const DetailBox = ({ placeData }) => {
   };
   return (
     <>
-      <div></div>
       <StDetailPage style={{ marginTop: '100px' }}>
         <StDetailBox size="placeTitle">
-          <div>{placeData?.place_name}</div>
+          <StDetailTitle>{placeData?.place_name}</StDetailTitle>
           <StReviewCountBox>
-            <div>별점: {isNaN(RatingAvg) ? 0 : RatingAvg}</div>
-            <div>방문자 리뷰: {commentRatingLength}</div>
+            <StReviewInfo>⭐ {isNaN(RatingAvg) ? '0.00' : RatingAvg}</StReviewInfo>
+            <StReviewInfo>방문자 리뷰: {commentRatingLength}</StReviewInfo>
           </StReviewCountBox>
         </StDetailBox>
         <StDetailBox size="placeDetail">
-          <div>{placeData?.road_address_name}</div>
-          <div>{placeData?.phone ? placeData?.phone : '사장님 전화번호 넣어주세요!!'}</div>
+          <StReviewInfo>
+            <MdOutlineMapsHomeWork /> {placeData?.road_address_name}
+          </StReviewInfo>
+          <StReviewInfo>
+            <MdOutlinePhonelinkRing />
+            {placeData?.phone ? placeData?.phone : '사장님 전화번호 넣어주세요!!'}
+          </StReviewInfo>
         </StDetailBox>
-        <StDetailBox size="placeReviews">
+        <StDetailBox display="block" size="placeReviews">
           <br />
           {data
             ?.filter((comment) => comment.shopId === shopId)
@@ -251,13 +238,18 @@ const DetailBox = ({ placeData }) => {
               return (
                 <StCommentBox key={comment.id}>
                   <StCommentHeader>
-                    <StCommentDetails>
-                      {/* Comment details (username, rating, date) */}
-                      <strong>{getUserName(comment.userId)}</strong> | 별점 {comment.rating.toFixed(1)} |{' '}
-                      {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
-                    </StCommentDetails>
-
-                    <StBtnWrap>
+                    <StReviewInfo2>
+                      {getUserName(comment.userId)}&nbsp;&nbsp;&nbsp; 리뷰별점 : {comment.rating.toFixed(1)}
+                    </StReviewInfo2>
+                    <StReviewInfo2>
+                      작성일 : {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
+                    </StReviewInfo2>
+                  </StCommentHeader>
+                  <StReviewInfo2>회원권 : {comment.selected}</StReviewInfo2>
+                  <StReviewInfo2>가격 : {comment.price}₩</StReviewInfo2>
+                  <StReviewInfo2>리뷰 내용 : {comment.comment}</StReviewInfo2>
+                  {comment.userId === auth.currentUser.uid ? (
+                    <StCommentBtnCtn>
                       <StCommentButtons onClick={openModal}>수정</StCommentButtons>
                       <StCommentButtons
                         onClick={() => {
@@ -266,19 +258,16 @@ const DetailBox = ({ placeData }) => {
                       >
                         삭제
                       </StCommentButtons>
-                    </StBtnWrap>
-                  </StCommentHeader>
-                  <div>{comment.comment}</div>
-                  <div>
-                    {comment.selected}|{comment.price}
-                  </div>
+                    </StCommentBtnCtn>
+                  ) : (
+                    <></>
+                  )}
+
                   {isOpen && (
                     <StModalBox onClick={closeModal}>
-                      
                       <StModalCtn onClick={(event) => event.stopPropagation()}>
-                      <StCloseModalBtn onClick={closeModal}>X</StCloseModalBtn>
-                        <DetailUpdate item = {comment ? comment : null} placeData = { placeData } closeModal={closeModal}/>
-                        
+                        <StCloseModalBtn onClick={closeModal}>X</StCloseModalBtn>
+                        <DetailUpdate item={comment ? comment : null} placeData={placeData} closeModal={closeModal} />
                       </StModalCtn>
                     </StModalBox>
                   )}
