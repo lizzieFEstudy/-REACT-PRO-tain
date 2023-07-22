@@ -31,17 +31,44 @@ const DetailBox = ({ placeData }) => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
-
   const [displayedComments, setDisplayedComments] = useState([]);
 
-  const { isLoading, isError, data } = useQuery('comments', getComments, {
+   // Define state variables for edit mode
+   const [editMode, setEditMode] = useState(false);
+   const [editCommentId, setEditCommentId] = useState(null);
+   const [editComment, setEditComment] = useState('');
+   const [editRating, setEditRating] = useState(0);
+ 
+   // Function to toggle edit mode
+   const toggleEditMode = (commentId, comment, rating) => {
+     setEditMode(!editMode);
+     setEditCommentId(commentId);
+     setEditComment(comment);
+     setEditRating(rating);
+   };
+
+   const { data } = useQuery('comments', getComments, {
     onSuccess: (data) => {
+      console.log('Fetched data:', data);
       setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
     }
   });
+
+   const { data: userData } = useQuery('users', getUsers, {
+    onSuccess: (userData) => {
+      console.log('Fetched userData:', userData);
+    }
+  });
+  const shopId = params.id;
+ 
+
+  // const { isLoading, isError, data } = useQuery('comments', getComments, {
+  //   onSuccess: (data) => {
+  //     setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
+  //   }
+  // });
 
   //가격정보 select창 관련
   const currentPlace = placeData.category_name.split('>').pop().trim()
@@ -76,15 +103,7 @@ const DetailBox = ({ placeData }) => {
     // 1000단위마다 콤마를 추가하여 설정
     setPrice(addComma(event.target.value));
   };
-
-
   //가격정보 select창 관련
-  const { data: userData } = useQuery('users', getUsers, {
-    onSuccess: (userData) => {
-      console.log('Fetched userData:', userData);
-    }
-  });
-  const shopId = params.id;
 
   //별점 구하는 곳
   const reviews = data?.filter((item) => item.shopId === shopId);
@@ -124,17 +143,15 @@ const DetailBox = ({ placeData }) => {
 
     const newComment = {
       shopId,
-      nickName,
       comment,
       rating,
       userId: auth.currentUser.uid,
       selected,
       price,
+      createdAt: new Date().toISOString()
     };
 
     mutation.mutate(newComment);
-
-    setNickName('');
     setComment('');
     setRating(0);
   };
@@ -161,6 +178,17 @@ const DetailBox = ({ placeData }) => {
   const handleRatingSelection = (ratingValue) => {
     setRating(ratingValue);
   };
+
+  const getUserName = (userId) => {
+    const user = userData?.find((user) => user.id === userId);
+    return user?.name || 'Unknown User'; // Return 'Unknown User' if user is not found
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('ko-KR', options);
+  };
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
@@ -178,36 +206,38 @@ const DetailBox = ({ placeData }) => {
         <StDetailBox size="placeReviews">
           <br />
           {data
-            ?.filter((comment) => comment.shopId == shopId)
+            ?.filter((comment) => comment.shopId === shopId)
             .map((comment) => {
+              const formattedDate = formatDate(comment.createdAt);
+              const isEditing = editMode && editCommentId === comment.id;
               return (
-                <div key={comment.id}>
-                  {/* <div>{users.name}</div> */}
-                  <strong>
-                    name| 별점 {comment.rating.toFixed(1)}| {comment.date}
-                  </strong>
-                  <div>
-                    회원권 종류 : {comment.selected}
-                  </div>
-                  <div>
-                    가격 : {comment.price}
-                  </div>
-                  <button
-                    onClick={() => {
-                      updateCommentHandler(comment.id);
-                    }}
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={() => {
-                      deleteCommentHandler(comment.id);
-                    }}
-                  >
-                    삭제
-                  </button>
-                  <div>{comment.comment}</div>
-                </div>
+                <StCommentBox key={comment.id}>
+                  <StCommentHeader>
+                    <StCommentDetails>
+                      {/* Comment details (username, rating, date) */}
+                      <strong>{getUserName(comment.userId)}</strong> | 별점 {comment.rating.toFixed(1)} |{' '}
+                      {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
+                    </StCommentDetails>
+                    <StBtnWrap>
+                      {isEditing ? ( // Show "완료" (Done) button in edit mode
+                        <StCommentButtons onClick={() => updateCommentHandler(comment.id)}>완료</StCommentButtons>
+                      ) : (
+                        // Show "수정" (Edit) button in non-edit mode
+                        <StCommentButtons onClick={() => toggleEditMode(comment.id, comment.comment, comment.rating)}>
+                          수정
+                        </StCommentButtons>
+                      )}
+                      <StCommentButtons
+                        onClick={() => {
+                          deleteCommentHandler(comment.id);
+                        }}
+                      >
+                        삭제
+                      </StCommentButtons>
+                    </StBtnWrap>
+                  </StCommentHeader>
+                  <StCommentContent>{isEditing ? null : comment.comment}</StCommentContent>
+                </StCommentBox>
               );
             })}
         </StDetailBox>
