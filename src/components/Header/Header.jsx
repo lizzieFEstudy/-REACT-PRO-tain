@@ -31,7 +31,6 @@ const Header = () => {
     <S.Header>
       <S.MenuCtn gap="0px">
         <S.MenuSpan onClick={() => navigate('/')}>로고(메인으로감)</S.MenuSpan>
-        <S.MenuSpan onClick={() => navigate('/detail')}>임시 디테일 실험용</S.MenuSpan>
         <S.MenuSpan borderright="3px solid white" onClick={() => navigate('/others')}>
           임시용메뉴
         </S.MenuSpan>
@@ -60,7 +59,7 @@ export default Header;
 
 const S = {
   Header: styled.header`
-    background-color:#f25320;
+    background-color: #f25320;
     width: 100;
     height: 80px;
     display: flex;

@@ -1,24 +1,49 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UseSelector } from 'react-redux';
-import { css, styled } from 'styled-components';
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
 import { getUsers } from '../../api/users';
+import {
+  CommentInput,
+  StDetailPage,
+  StDetailBox,
+  StReviewCountBox,
+  StarButton,
+  StCommentBox,
+  StCommentHeader,
+  StCommentContent,
+  StCommentButtons,
+  StBtnWrap,
+  StCommentDetails
+} from './DetailStyles';
 
 const DetailBox = ({ placeData }) => {
   const navigate = useNavigate();
 
   const params = useParams();
 
-  const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [displayedComments, setDisplayedComments] = useState([]);
 
-  const { isLoading, isError, data } = useQuery('comments', getComments, {
+  // Define state variables for edit mode
+  const [editMode, setEditMode] = useState(false);
+  const [editCommentId, setEditCommentId] = useState(null);
+  const [editComment, setEditComment] = useState('');
+  const [editRating, setEditRating] = useState(0);
+
+  // Function to toggle edit mode
+  const toggleEditMode = (commentId, comment, rating) => {
+    setEditMode(!editMode);
+    setEditCommentId(commentId);
+    setEditComment(comment);
+    setEditRating(rating);
+  };
+
+  const { data } = useQuery('comments', getComments, {
     onSuccess: (data) => {
       console.log('Fetched data:', data);
       setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
@@ -63,7 +88,6 @@ const DetailBox = ({ placeData }) => {
 
     const newComment = {
       shopId,
-      nickName,
       comment,
       rating,
       userId: auth.currentUser.uid,
@@ -72,7 +96,6 @@ const DetailBox = ({ placeData }) => {
 
     mutation.mutate(newComment);
 
-    setNickName('');
     setComment('');
     setRating(0);
   };
@@ -85,10 +108,29 @@ const DetailBox = ({ placeData }) => {
     }
   };
 
-  const updateCommentHandler = (id) => {
+  const updateCommentHandler = async (id) => {
     const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
     if (confirmed) {
-      updateMutation.mutate(id);
+      const updatedComment = {
+        id,
+        shopId,
+        comment: editComment,
+        rating: editRating,
+        userId: auth.currentUser.uid,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await updateComment(updatedComment);
+        // After successful update, reset the edit mode
+        setEditMode(false);
+        setEditCommentId(null);
+        setEditComment('');
+        setEditRating(0);
+      } catch (error) {
+        console.error('Error updating comment:', error);
+        // Handle error if needed
+      }
     }
   };
 
@@ -128,31 +170,38 @@ const DetailBox = ({ placeData }) => {
         <StDetailBox size="placeReviews">
           <br />
           {data
-            ?.filter((comment) => comment.shopId == shopId)
+            ?.filter((comment) => comment.shopId === shopId)
             .map((comment) => {
               const formattedDate = formatDate(comment.createdAt);
+              const isEditing = editMode && editCommentId === comment.id;
               return (
-                <div key={comment.id}>
-                  <div>
-                    <strong>{getUserName(comment.userId)}</strong>| 별점 {comment.rating.toFixed(1)}|{' '}
-                    {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
-                  </div>
-                  <button
-                    onClick={() => {
-                      updateCommentHandler(comment.id);
-                    }}
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={() => {
-                      deleteCommentHandler(comment.id);
-                    }}
-                  >
-                    삭제
-                  </button>
-                  <div>{comment.comment}</div>
-                </div>
+                <StCommentBox key={comment.id}>
+                  <StCommentHeader>
+                    <StCommentDetails>
+                      {/* Comment details (username, rating, date) */}
+                      <strong>{getUserName(comment.userId)}</strong> | 별점 {comment.rating.toFixed(1)} |{' '}
+                      {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
+                    </StCommentDetails>
+                    <StBtnWrap>
+                      {isEditing ? ( // Show "완료" (Done) button in edit mode
+                        <StCommentButtons onClick={() => updateCommentHandler(comment.id)}>완료</StCommentButtons>
+                      ) : (
+                        // Show "수정" (Edit) button in non-edit mode
+                        <StCommentButtons onClick={() => toggleEditMode(comment.id, comment.comment, comment.rating)}>
+                          수정
+                        </StCommentButtons>
+                      )}
+                      <StCommentButtons
+                        onClick={() => {
+                          deleteCommentHandler(comment.id);
+                        }}
+                      >
+                        삭제
+                      </StCommentButtons>
+                    </StBtnWrap>
+                  </StCommentHeader>
+                  <StCommentContent>{isEditing ? null : comment.comment}</StCommentContent>
+                </StCommentBox>
               );
             })}
         </StDetailBox>
@@ -182,6 +231,7 @@ const DetailBox = ({ placeData }) => {
             onChange={(event) => commentHandler(event)}
             placeholder="내용을 입력하세요."
           />
+
           <button onClick={addCommentHandler}>등록</button>
         </StDetailBox>
       </StDetailPage>
@@ -190,76 +240,3 @@ const DetailBox = ({ placeData }) => {
 };
 
 export default DetailBox;
-
-const SInfoBox = styled.div`
-  flex: 1;
-  margin: 500px;
-`;
-
-const SReviewBox = styled.div`
-  flex: 1;
-  margin: 30px;
-`;
-
-const CommentInput = styled.input`
-  background: transparent;
-  border: 1px solid white;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  width: 300px;
-  height: 30px;
-  padding: 5px;
-  color: black;
-`;
-
-const StDetailPage = styled.div`
-  margin: 100px auto 0px;
-  border: 1px solid red;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const StDetailBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  ${({ size }) => {
-    switch (size) {
-      case 'placeTitle':
-        return css`
-          width: 50%;
-          height: 20%;
-        `;
-      case 'placeDetail':
-        return css`
-          width: 70%;
-          height: 20%;
-        `;
-      case 'placeReviews':
-        return css`
-          width: 70%;
-          height: 80%;
-        `;
-    }
-  }}
-  border: 1px solid black;
-
-  /* align-items: center; */
-`;
-const StReviewCountBox = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const StarButton = styled.button`
-  font-size: 20px;
-  color: ${(props) => (props.active ? 'gold' : 'gray')};
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-`;
