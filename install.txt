@@ -1,4 +1,4 @@
 npm i
 yarn
-yarn add styled-components json-server axios react-query react-uuid firebase react-icons
+yarn add styled-components json-server axios react-query react-uuid firebase react-icons react-slick
 yarn json-server --watch db.json --port 3333

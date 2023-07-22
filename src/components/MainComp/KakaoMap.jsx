@@ -30,6 +30,7 @@ const KakaoMap = () => {
   const [countCategory, setCountCategory] = useState(0);
   const [places, setPlaces] = useState([]);
   const [searchSubmitValue, setSearchSubmitValue] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ x: 127.1086228, y: 37.4012191 });
 
   useEffect(() => {
     const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -38,7 +39,6 @@ const KakaoMap = () => {
       center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
       level: 3 //지도의 레벨(확대, 축소 정도)
     };
-
     const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
     /**
@@ -46,6 +46,11 @@ const KakaoMap = () => {
      */
     const setInitLocation = async () => {
       let locPosition = await getCurrentCoordinate();
+
+      setMapCenter({
+        x: locPosition.La,
+        y: locPosition.Ma
+      });
 
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);
@@ -55,6 +60,8 @@ const KakaoMap = () => {
         position: locPosition,
         map: map
       });
+
+      //   CoordPlaces.refetch();
     };
     setInitLocation();
 
@@ -259,9 +266,15 @@ const KakaoMap = () => {
       const lat = latlng.getLat(); // 위도
       const lon = latlng.getLng(); // 경도
 
-      const coordinate = new kakao.maps.LatLng(lat, lon);
+      setMapCenter({
+        x: lon,
+        y: lat
+      });
 
+      const coordinate = new kakao.maps.LatLng(lat, lon);
       searchPlaces(CATEGORY_NAMES[countCategory], coordinate);
+
+      //   CoordPlaces.refetch();
     });
 
     /**
@@ -276,6 +289,8 @@ const KakaoMap = () => {
     <S.MapLayout>
       <div id="map" style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}></div>
 
+      <div></div>
+
       <Controls
         CATEGORY_NAMES={CATEGORY_NAMES}
         countCategory={countCategory}
@@ -283,7 +298,12 @@ const KakaoMap = () => {
         setSearchSubmitValue={setSearchSubmitValue}
       />
 
-      <PlaceResult CATEGORY_NAMES={CATEGORY_NAMES} countCategory={countCategory} places={places} />
+      <PlaceResult
+        CATEGORY_NAMES={CATEGORY_NAMES}
+        countCategory={countCategory}
+        places={places}
+        mapCenter={mapCenter}
+      />
     </S.MapLayout>
   );
 };
