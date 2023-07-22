@@ -1,19 +1,58 @@
 {
   "comments": [
     {
-      "id": "3edbd0de-df39-f586-5deb-8b5ca4c2c356",
-      "shopId": "27091506",
+      "shopId": "254868182",
       "nickName": "",
-      "comment": "에이블헬스장",
-      "userId": "qsn5T77abRgBEYiDHYCClt2EB252"
+      "comment": "리뷰테스트1",
+      "rating": 5,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "id": 1
+    },
+    {
+      "shopId": "254868182",
+      "nickName": "",
+      "comment": "사장님이 싸고 맛있어요!",
+      "rating": 5,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "헬스이용권 1개월",
+      "price": "10,000,000₩",
+      "id": 2
     },
     {
       "shopId": "27091506",
-      "nickName": "",
-      "comment": "코멘트아이디 실험용",
+      "comment": "사장님이 헬창이에요",
+      "rating": 4,
       "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
-      "id": "N14XCGz"
+      "selected": "헬스이용권 3개월",
+      "price": "2,000,000₩",
+      "id": 3
     },
+    {
+
+      "shopId": "25887294",
+      "nickName": "",
+      "comment": "2",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "id": "zHXZZdS"
+    },
+    {
+      "shopId": "27111982",
+      "nickName": "",
+      "comment": "테스트",
+      "rating": 3,
+      "userId": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
+      "id": "dcqAZ-8"
+
+      "shopId": "27091506",
+      "comment": "aaa",
+      "rating": 3,
+      "userId": "qsn5T77abRgBEYiDHYCClt2EB252",
+      "selected": "헬스이용권 6개월",
+      "price": "444₩",
+      "createdAt": "2023-07-22T03:48:49.672Z",
+      "id": 4
+    }
   ],
   "users": [
     {
@@ -33,6 +72,18 @@
       "name": "이동준3",
       "email": "operational4@naver.com",
       "pw": "password1!"
+    },
+    {
+      "id": "vCSXzBzSVRWubjvyPvS41wigNuJ3",
+      "name": "황대성",
+      "email": "klp2797@naver.com",
+      "pw": "hdssdh5025!!"
+    },
+    {
+      "id": "knVhnnVoarOno208AlpcB8NesDN2",
+      "name": "이은한",
+      "email": "reactprotein@gmail.com",
+      "pw": "as12df78**"
     }
   ]
 }

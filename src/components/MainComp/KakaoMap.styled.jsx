@@ -8,8 +8,51 @@ export const MapLayout = styled.div`
   width: 100%;
   height: 100%;
 
-  .testClass {
-    background: #fab;
+  .infoWindow-wrap {
+    width: 320px;
+  }
+  .infoWindow-inner{
+    padding : 15px 10px 0px 10px;
+  }
+  .infoWindow-title{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .infoWindow-category{
+    font-size:12px;
+    color: #a3aab0;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .infoWindow-address{
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  .infoWindow-phone{
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .infoWindow-closeBtn{
+    position: absolute; right: 10px; top: 8px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+  .infoWindow-closeBtn::before{
+    display: block;
+    content: "";
+    position: absolute; left: 50%; top: 50%;
+    margin-left: -12px;
+    margin-top: -11px;
+    width: 24px;
+    height: 24px;
+    border-radius: 25px;
+    z-index: -1;
+    background-color: #dddddd;
   }
 `;
 
