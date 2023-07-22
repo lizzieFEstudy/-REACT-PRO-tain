@@ -40,8 +40,7 @@ const LoginComp = () => {
         const user = userCredential.user;
         const token = await user.getIdToken();
         sessionStorage.setItem('token', token);
-        //추후에 window.location.reload 말고 Main page로 바로 가도록 고쳐야 함.
-        navigate("/")        
+        //추후에 window.location.reload 말고 Main page로 바로 가도록 고쳐야 함.     
         window.location.reload()
       } catch (error) {
         alert('로그인 인증 에러');
@@ -50,6 +49,8 @@ const LoginComp = () => {
       }
     }
   };
+
+
 
   return (
     <StLoginCtn>

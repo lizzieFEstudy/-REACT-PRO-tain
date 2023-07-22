@@ -12,7 +12,7 @@ export const logInUser = auth;
 
 const Router = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [isCheckingLogin, setIsCheckingLogin] = useState(true);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
@@ -22,14 +22,18 @@ const Router = () => {
       // 임시로 true값으로 설정.
       setIsLoggedIn(false);
     }
+    setIsCheckingLogin(false)
   }, [isLoggedIn]);
+  if (isCheckingLogin) {
+    return <div>페이지 로딩중입니다..!</div>
+  }
 
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/:id" element={<Details />} />
+          <Route path="/:id" element={isLoggedIn ? <Details /> : <Navigate to = "/login"/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
