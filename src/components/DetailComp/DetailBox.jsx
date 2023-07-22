@@ -1,29 +1,65 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+<<<<<<< HEAD
 import styled, { css } from 'styled-components';
+=======
+import { UseSelector } from 'react-redux';
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
 import { getComments, addComment, deleteComment, updateComment } from '../../api/comments';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { auth } from '../../firebase';
+<<<<<<< HEAD
 
 import { VscTriangleDown } from 'react-icons/vsc';
+=======
+import { getUsers } from '../../api/users';
+import {
+  CommentInput,
+  StDetailPage,
+  StDetailBox,
+  StReviewCountBox,
+  StarButton,
+  StCommentBox,
+  StCommentHeader,
+  StCommentContent,
+  StCommentButtons,
+  StBtnWrap,
+  StCommentDetails
+} from './DetailStyles';
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
 
 const DetailBox = ({ placeData }) => {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [nickName, setNickName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
   const [displayedComments, setDisplayedComments] = useState([]);
 
-  const { isLoading, isError, data } = useQuery('comments', getComments, {
+  // Define state variables for edit mode
+  const [editMode, setEditMode] = useState(false);
+  const [editCommentId, setEditCommentId] = useState(null);
+  const [editComment, setEditComment] = useState('');
+  const [editRating, setEditRating] = useState(0);
+
+  // Function to toggle edit mode
+  const toggleEditMode = (commentId, comment, rating) => {
+    setEditMode(!editMode);
+    setEditCommentId(commentId);
+    setEditComment(comment);
+    setEditRating(rating);
+  };
+
+  const { data } = useQuery('comments', getComments, {
     onSuccess: (data) => {
+      console.log('Fetched data:', data);
       setDisplayedComments(data.filter((comment) => comment.shopId === shopId));
     }
   });
 
+<<<<<<< HEAD
   //가격정보 select창 관련
   const currentPlace = placeData.category_name.split('>').pop().trim()
   console.log("currentPlace=>",currentPlace)
@@ -60,6 +96,13 @@ const DetailBox = ({ placeData }) => {
 
 
   //가격정보 select창 관련
+=======
+  const { data: userData } = useQuery('users', getUsers, {
+    onSuccess: (userData) => {
+      console.log('Fetched userData:', userData);
+    }
+  });
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
 
   const shopId = params.id;
 
@@ -101,17 +144,19 @@ const DetailBox = ({ placeData }) => {
 
     const newComment = {
       shopId,
-      nickName,
       comment,
       rating,
       userId: auth.currentUser.uid,
+<<<<<<< HEAD
       selected,
       price,
+=======
+      createdAt: new Date().toISOString()
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
     };
 
     mutation.mutate(newComment);
 
-    setNickName('');
     setComment('');
     setRating(0);
   };
@@ -124,10 +169,29 @@ const DetailBox = ({ placeData }) => {
     }
   };
 
-  const updateCommentHandler = (id) => {
+  const updateCommentHandler = async (id) => {
     const confirmed = window.confirm('이 댓글을 수정하시겠습니까?');
     if (confirmed) {
-      updateMutation.mutate(id);
+      const updatedComment = {
+        id,
+        shopId,
+        comment: editComment,
+        rating: editRating,
+        userId: auth.currentUser.uid,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await updateComment(updatedComment);
+        // After successful update, reset the edit mode
+        setEditMode(false);
+        setEditCommentId(null);
+        setEditComment('');
+        setEditRating(0);
+      } catch (error) {
+        console.error('Error updating comment:', error);
+        // Handle error if needed
+      }
     }
   };
 
@@ -138,6 +202,21 @@ const DetailBox = ({ placeData }) => {
   const handleRatingSelection = (ratingValue) => {
     setRating(ratingValue);
   };
+<<<<<<< HEAD
+=======
+
+  const getUserName = (userId) => {
+    const user = userData?.find((user) => user.id === userId);
+    return user?.name || 'Unknown User'; // Return 'Unknown User' if user is not found
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return isNaN(date) ? 'Invalid Date' : date.toLocaleDateString('ko-KR', options);
+  };
+
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
   return (
     <>
       <StDetailPage style={{ marginTop: '100px' }}>
@@ -155,9 +234,12 @@ const DetailBox = ({ placeData }) => {
         <StDetailBox size="placeReviews">
           <br />
           {data
-            ?.filter((comment) => comment.shopId == shopId)
+            ?.filter((comment) => comment.shopId === shopId)
             .map((comment) => {
+              const formattedDate = formatDate(comment.createdAt);
+              const isEditing = editMode && editCommentId === comment.id;
               return (
+<<<<<<< HEAD
                 <div key={comment.id}>
                   {/* <div>{users.name}</div> */}
                   <strong>
@@ -185,6 +267,35 @@ const DetailBox = ({ placeData }) => {
                   </button>
                   <div>{comment.comment}</div>
                 </div>
+=======
+                <StCommentBox key={comment.id}>
+                  <StCommentHeader>
+                    <StCommentDetails>
+                      {/* Comment details (username, rating, date) */}
+                      <strong>{getUserName(comment.userId)}</strong> | 별점 {comment.rating.toFixed(1)} |{' '}
+                      {formattedDate !== 'Invalid Date' ? formattedDate : 'No Date'}
+                    </StCommentDetails>
+                    <StBtnWrap>
+                      {isEditing ? ( // Show "완료" (Done) button in edit mode
+                        <StCommentButtons onClick={() => updateCommentHandler(comment.id)}>완료</StCommentButtons>
+                      ) : (
+                        // Show "수정" (Edit) button in non-edit mode
+                        <StCommentButtons onClick={() => toggleEditMode(comment.id, comment.comment, comment.rating)}>
+                          수정
+                        </StCommentButtons>
+                      )}
+                      <StCommentButtons
+                        onClick={() => {
+                          deleteCommentHandler(comment.id);
+                        }}
+                      >
+                        삭제
+                      </StCommentButtons>
+                    </StBtnWrap>
+                  </StCommentHeader>
+                  <StCommentContent>{isEditing ? null : comment.comment}</StCommentContent>
+                </StCommentBox>
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb
               );
             })}
         </StDetailBox>
@@ -239,6 +350,7 @@ const DetailBox = ({ placeData }) => {
             onChange={(event) => commentHandler(event)}
             placeholder="내용을 입력하세요."
           />
+
           <button onClick={addCommentHandler}>등록</button>
         </StDetailBox>
       </StDetailPage>
@@ -247,6 +359,7 @@ const DetailBox = ({ placeData }) => {
 };
 
 export default DetailBox;
+<<<<<<< HEAD
 
 const CommentInput = styled.input`
   background: transparent;
@@ -353,3 +466,5 @@ const StDropdownItem = styled.div`
     background-color: #f4f4f4;
   }
 `;
+=======
+>>>>>>> eaef9156f34a3d75cbc39e297cf7e70f49b93efb

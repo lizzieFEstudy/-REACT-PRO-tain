@@ -5,7 +5,6 @@ import DetailBox from '../components/DetailComp/DetailBox';
 function Details() {
   const location = useLocation();
   const placeData = location.state?.test1;
-  // console.log('placeData=>', placeData);
 
   return (
     <>
