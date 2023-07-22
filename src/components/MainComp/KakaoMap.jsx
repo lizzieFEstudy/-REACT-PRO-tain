@@ -238,7 +238,8 @@ const KakaoMap = () => {
       let detailBtn = document.createElement('button');
       detailBtn.innerHTML = '상세보기';
       detailBtn.onclick = function () {
-        navigate(`/${placeId}`, { state: { test1: place } });
+        navigate(`/${placeId}`, { state: { test1: place } });  
+       
       };
 
       detailBtn.style.marginTop = '15px'
