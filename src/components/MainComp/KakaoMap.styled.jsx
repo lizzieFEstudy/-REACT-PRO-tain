@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const MapLayout = styled.div`
   overflow: hidden;
   position: absolute;
-  top: 5.0rem;
+  top: 5rem;
   left: 0;
   width: 100%;
   height: 100%;
@@ -214,9 +214,77 @@ export const PlaceFoldBtn = styled.button`
 `;
 
 export const PlaceRank = styled.div`
+  display: flex;
+  box-sizing: border-box;
   min-height: 72px;
   margin-bottom: 8px;
+  padding: 14px 20px;
   background: #fff;
+
+  > strong {
+    box-sizing: border-box;
+    position: relative;
+    min-width: 160px;
+    padding-left: 46px;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1.33;
+    color: #212529;
+
+    > b {
+      margin-left: 4px;
+      color: #f25320;
+    }
+    > i {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      left: -2px;
+      transform: translateY(-50%);
+      font-size: 36px;
+    }
+  }
+  ol {
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 44px;
+    counter-reset: rank-number;
+
+    > li {
+      box-sizing: border-box;
+      position: relative;
+      width: 180px;
+      height: 100%;
+      padding: 0 8px 0 30px;
+      border-left: 2px solid #f5f5f6;
+      line-height: 1.33;
+      counter-increment: rank-number;
+
+      &:before {
+        content: counter(rank-number);
+        position: absolute;
+        top: 50%;
+        left: 8px;
+        font-size: 22px;
+        font-style: italic;
+        font-weight: 600;
+        color: #b8bfc4;
+        opacity: 0.6;
+        transform: translateY(-50%);
+      }
+
+      > p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-break: break-all;
+        font-weight: 600;
+      }
+    }
+  }
 `;
 
 export const PlaceList = styled.ul`
