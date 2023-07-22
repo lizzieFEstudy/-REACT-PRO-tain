@@ -2,12 +2,24 @@ import { css, styled } from "styled-components";
 
 export const CommentInput = styled.input`
   background: transparent;
-  border: 1px solid white;
+  border: 1px solid black;
+  border-radius: 20px;
   margin-left: 20px;
   margin-bottom: 20px;
   width: 300px;
   height: 30px;
-  padding: 5px;
+  padding: 10px;
+  color: black;
+`;
+
+export const StPriceInput = styled.input`
+  background: transparent;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin-left: 20px;
+  width: 180px;
+  height: 20px;
+  padding: 10px;
   color: black;
 `;
 
@@ -22,36 +34,69 @@ export const StDetailPage = styled.div`
 `;
 
 export const StDetailBox = styled.div`
-  display: flex;
+  display: ${(props) => (props.display ? props.display : "flex")};
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   ${({ size }) => {
     switch (size) {
       case 'placeTitle':
         return css`
           width: 70%;
-          height: 20%;
         `;
       case 'placeDetail':
         return css`
           width: 70%;
-          height: 20%;
         `;
       case 'placeReviews':
         return css`
           width: 70%;
-          height: 80%;
         `;
     }
   }}
-  border: 1px solid black;
 `;
+
+export const StDetailTitle = styled.div`
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 10px 30px;
+  color: white;
+  background-color: #ff6e6e;
+  border-radius: 30px;
+  margin-top: 2rem;
+`
 
 export const StReviewCountBox = styled.div`
   display: flex;
   flex-direction: row;
+  margin: 1rem;
 `;
+
+export const StReviewInfo = styled.div`
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: #ff6e6e;
+  background-color: white;
+  border: 1px solid #ff6e6e;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0 1rem;
+`
+
+export const StReviewInfo2 = styled.div`
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 10px;
+`
 
 export const StarButton = styled.button`
   font-size: 20px;
@@ -65,28 +110,42 @@ export const StarButton = styled.button`
 export const StCommentBox = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px 0;
+  justify-content: center;
+  border: 2px solid #f25320;
+  border-radius: 10px;
+  padding: 20px 10px;
+  width: 80%;
   position: relative;
+  margin : 3px auto;
+  gap: 1rem;
 `;
 
-export const StCommentHeader = styled.div`
+export const StCommentHeader  = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  justify-content: space-between;
+`
+
+export const StCommentBtnCtn  = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+`
+
+export const StCommentButtons = styled.div`
+  margin : 0px 5px;
+  gap: 5px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const StCommentContent = styled.div`
   margin-bottom: 10px;
 `;
 
-export const StCommentButtons = styled.div`
-  display: flex;
-  gap: 5px;
-`;
+
 
 export const StBtnWrap = styled.div`
   position: absolute;
@@ -104,6 +163,7 @@ export const StCommentDetails = styled.div`
 export const StDropdownCtn = styled.div`
  display: flex;
  flex-direction: row;
+ align-items: center;
 `;
 
 export const StDropdown = styled.div`
@@ -143,3 +203,63 @@ export const StDropdownItem = styled.div`
     background-color: #f4f4f4;
   }
 `;
+
+export const StModalBox = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: beige;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  animation: colorChange 0.4 linear;
+  @keyframes colorChange {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+export const StModalCtn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  background-color: white;
+  padding: 20px;
+  width: 40%;
+  height: 30%;
+  border-radius: 12px;
+  z-index: 2;
+  animation: dropTop 0.4s linear;
+  @keyframes dropTop {
+    0% {
+      transform: translateY(-30%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1;
+    }
+  }
+`
+export const StCloseModalBtn = styled.button`
+  background-color: White;
+  border: 1px solid black;
+  border-radius: 50%;
+  transform: scale(1.2);
+  margin-left: 700px;
+`
+
+export const StUpdateModalCtn = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`

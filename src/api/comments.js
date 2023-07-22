@@ -11,6 +11,7 @@ const deleteComment = async (id) => {
     await axios.delete(`${process.env.REACT_APP_SERVER_URL}/comments/${id}`);
 };
 const updateComment = async ({ id, updatedComment }) => {
+  console.log("id=>",id)
   await axios.patch(`${process.env.REACT_APP_SERVER_URL}/comments/${id}`, updatedComment);
 };
 
