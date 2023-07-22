@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { css, styled } from "styled-components";
 
 export const CommentInput = styled.input`
   background: transparent;
@@ -99,4 +99,47 @@ export const StBtnWrap = styled.div`
 export const StCommentDetails = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const StDropdownCtn = styled.div`
+ display: flex;
+ flex-direction: row;
+`;
+
+export const StDropdown = styled.div`
+  user-select: none;
+  width: 300px;
+  margin: 20px;
+  position: relative;
+`;
+
+export const StDropdownBtn = styled.div`
+  cursor: pointer;
+  padding: 15px 20px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const StDropdownContent = styled.div`
+  position: absolute;
+  top: 110%;
+  left: 0;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 20px;
+  width: 95%;
+`;
+
+export const StDropdownItem = styled.div`
+  cursor: pointer;
+  padding: 10px;
+  transition: all 0.2s;
+  &:hover {
+    background-color: #f4f4f4;
+  }
 `;
