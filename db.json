@@ -99,6 +99,26 @@
       "price": "22₩",
       "createdAt": "2023-07-22T07:12:46.342Z",
       "id": "wjysauh"
+    },
+    {
+      "shopId": "783197989",
+      "comment": "단미짱 수정수정",
+      "rating": 3,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "selected": "필라테스 회원권 3개월",
+      "price": "50,000",
+      "createdAt": "2023-07-22T15:52:59.128Z",
+      "id": "EJ7pfeK"
+    },
+    {
+      "shopId": "847611475",
+      "comment": "라노라노 밀라노 ~",
+      "rating": 4,
+      "userId": "knVhnnVoarOno208AlpcB8NesDN2",
+      "selected": "PT 10회",
+      "price": "500,000",
+      "createdAt": "2023-07-23T00:05:02.423Z",
+      "id": "uJO4OYs"
     }
   ],
   "users": [
